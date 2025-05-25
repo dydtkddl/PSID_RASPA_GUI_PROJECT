@@ -1,0 +1,24 @@
+SimulationType                MonteCarlo
+NumberOfCycles                {NumberOfCycles}
+NumberOfInitializationCycles  {NumberOfInitializationCycles}
+PrintEvery                    {PrintEvery}
+RestartFile                   {RestartFile}
+
+Forcefield                    {Forcefield}
+UseChargesFromCIFFile         {UseChargesFromCIFFile}
+ChargeFromChargeEquilibration {ChargeFromChargeEquilibration}
+
+Framework 0
+FrameworkName                 {FrameworkName}
+UnitCells                     {UnitCells}
+ExternalTemperature           {ExternalTemperature}
+ExternalPressure              {ExternalPressure}
+
+Component 0 MoleculeName             {MoleculeName}
+            MoleculeDefinition       {MoleculeDefinition}
+            FugacityCoefficient      {FugacityCoefficient}
+            TranslationProbability   {TranslationProbability}
+            RotationProbability      {RotationProbability}
+            ReinsertionProbability   {ReinsertionProbability}
+            SwapProbability          {SwapProbability}
+            CreateNumberOfMolecules  {CreateNumberOfMolecules}
