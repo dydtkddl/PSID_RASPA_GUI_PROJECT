@@ -1,0 +1,703 @@
+
+[COMMAND] mkdir -p $HOME/.RASPA_GUI
+
+[COMMAND] cd $HOME/.RASPA_GUI && pwd
+/home/dydtkddhkdwk/.RASPA_GUI
+
+[COMMAND] cd $HOME/.RASPA_GUI && if [ ! -d RASPA2 ]; then git clone https://github.com/iRASPA/RASPA2.git; fi
+
+[COMMAND] echo 'export RASPA_DIR=$HOME/.RASPA_GUI/RASPA2' >> ~/.bashrc
+
+[COMMAND] echo 'export DYLD_LIBRARY_PATH=${RASPA_DIR}/lib' >> ~/.bashrc
+
+[COMMAND] echo 'export LD_LIBRARY_PATH=${RASPA_DIR}/lib' >> ~/.bashrc
+
+[COMMAND] bash -c 'source ~/.bashrc'
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && rm -rf autom4te.cache
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && mkdir -p m4
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && libtoolize
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && aclocal
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && autoreconf -i
+configure.ac:23: warning: The preprocessor macro `STDC_HEADERS' is obsolete.
+configure.ac:23:   Except in unusual embedded environments, you can safely include all
+configure.ac:23:   ISO C90 headers unconditionally.
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && automake --add-missing
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && autoconf
+configure.ac:23: warning: The preprocessor macro `STDC_HEADERS' is obsolete.
+configure.ac:23:   Except in unusual embedded environments, you can safely include all
+configure.ac:23:   ISO C90 headers unconditionally.
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && ./configure --prefix=$HOME/.RASPA_GUI/RASPA2
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether make supports the include directive... yes (GNU style)
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for library containing ddot_... -lblas
+checking for library containing dsyevd_... -llapack
+checking for library containing fftw_plan_dft_r2c_1d... -lfftw3
+checking for gcc... (cached) gcc
+checking whether the compiler supports GNU C... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for gcc option to enable C11 features... (cached) none needed
+checking whether gcc understands -c and -o together... (cached) yes
+checking dependency style of gcc... (cached) gcc3
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking dependency style of g++... gcc3
+checking for g77... no
+checking for xlf... no
+checking for f77... f77
+checking whether the compiler supports GNU Fortran 77... yes
+checking whether f77 accepts -g... yes
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for math.h... yes
+checking for string.h... (cached) yes
+checking for fftw3.h... yes
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 1572864
+checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for ar... ar
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for a working dd... /usr/bin/dd
+checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+checking for mt... mt
+checking if mt is a manifest tool... no
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... yes
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... g++ -E
+checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking for g++ option to produce PIC... -fPIC -DPIC
+checking if g++ PIC flag -fPIC -DPIC works... yes
+checking if g++ static flag -static works... yes
+checking if g++ supports -c -o file.o... yes
+checking if g++ supports -c -o file.o... (cached) yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking for f77 option to produce PIC... -fPIC
+checking if f77 PIC flag -fPIC works... yes
+checking if f77 static flag -static works... yes
+checking if f77 supports -c -o file.o... yes
+checking if f77 supports -c -o file.o... (cached) yes
+checking whether the f77 linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: creating forcefield/Makefile
+config.status: creating forcefield/ExampleMOFsForceField/Makefile
+config.status: creating forcefield/ExampleZeolitesForceField/Makefile
+config.status: creating forcefield/ExampleMoleculeForceField/Makefile
+config.status: creating forcefield/Dubbeldam2007FlexibleIRMOF-1/Makefile
+config.status: creating forcefield/Dubbeldam2007FlexibleIRMOF-10/Makefile
+config.status: creating forcefield/Dubbeldam2007FlexibleIRMOF-16/Makefile
+config.status: creating forcefield/CoreShellSchroderSauer/Makefile
+config.status: creating forcefield/Nicholas/Makefile
+config.status: creating molecules/Makefile
+config.status: creating molecules/ExampleDefinitions/Makefile
+config.status: creating framework/Makefile
+config.status: creating framework/Dubbeldam2007FlexibleIRMOF-1/Makefile
+config.status: creating framework/Dubbeldam2007FlexibleIRMOF-10/Makefile
+config.status: creating framework/Dubbeldam2007FlexibleIRMOF-16/Makefile
+config.status: creating framework/CoreShellSchroderSauer/Makefile
+config.status: creating framework/Demontis/Makefile
+config.status: creating framework/DemontisModified/Makefile
+config.status: creating framework/Nicholas/Makefile
+config.status: creating framework/NicholasModified/Makefile
+config.status: creating structures/Makefile
+config.status: creating structures/zeolites/Makefile
+config.status: creating structures/mofs/Makefile
+config.status: creating structures/minerals/Makefile
+config.status: creating structures/ceramics/Makefile
+config.status: creating structures/zeolites/cif/Makefile
+config.status: creating structures/zeolites/block/Makefile
+config.status: creating structures/zeolites/ions/Makefile
+config.status: creating structures/mofs/cif/Makefile
+config.status: creating structures/mofs/block/Makefile
+config.status: creating structures/mofs/ions/Makefile
+config.status: creating structures/minerals/cif/Makefile
+config.status: creating structures/ceramics/cif/Makefile
+config.status: executing depfiles commands
+config.status: executing libtool commands
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && make -j 5
+Making all in src
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/src'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/src'
+Making all in forcefield
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+Making all in ExampleMOFsForceField
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMOFsForceField'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMOFsForceField'
+Making all in ExampleZeolitesForceField
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleZeolitesForceField'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleZeolitesForceField'
+Making all in ExampleMoleculeForceField
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMoleculeForceField'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMoleculeForceField'
+Making all in Dubbeldam2007FlexibleIRMOF-1
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+Making all in Dubbeldam2007FlexibleIRMOF-10
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+Making all in Dubbeldam2007FlexibleIRMOF-16
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+Making all in Nicholas
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Nicholas'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Nicholas'
+Making all in CoreShellSchroderSauer
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/CoreShellSchroderSauer'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/CoreShellSchroderSauer'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+Making all in molecules
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+Making all in ExampleDefinitions
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules/ExampleDefinitions'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules/ExampleDefinitions'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+Making all in framework
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+Making all in Dubbeldam2007FlexibleIRMOF-1
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-1'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-1'
+Making all in Dubbeldam2007FlexibleIRMOF-10
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-10'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-10'
+Making all in Dubbeldam2007FlexibleIRMOF-16
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-16'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-16'
+Making all in CoreShellSchroderSauer
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/CoreShellSchroderSauer'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/CoreShellSchroderSauer'
+Making all in Demontis
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Demontis'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Demontis'
+Making all in DemontisModified
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/DemontisModified'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/DemontisModified'
+Making all in Nicholas
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Nicholas'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Nicholas'
+Making all in NicholasModified
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/NicholasModified'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/NicholasModified'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+Making all in structures
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+Making all in zeolites
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+Making all in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/cif'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/cif'
+Making all in block
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/block'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/block'
+Making all in ions
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/ions'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/ions'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+Making all in mofs
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+Making all in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/cif'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/cif'
+Making all in block
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/block'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/block'
+Making all in ions
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/ions'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/ions'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+Making all in minerals
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+Making all in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals/cif'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals/cif'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+Making all in ceramics
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+Making all in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics/cif'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics/cif'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[3]: Nothing to be done for 'all-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[2]: Nothing to be done for 'all-am'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2'
+make[1]: Nothing to be done for 'all-am'.
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2'
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && make install -j 5
+Making install in src
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/src'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/src'
+make[2]: Nothing to be done for 'install-data-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib'
+ /bin/bash ../libtool   --mode=install /usr/bin/install -c   libraspa2.la '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib'
+libtool: install: /usr/bin/install -c .libs/libraspa2.so.0.0.0 /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib/libraspa2.so.0.0.0
+libtool: install: (cd /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib && { ln -s -f libraspa2.so.0.0.0 libraspa2.so.0 || { rm -f libraspa2.so.0 && ln -s libraspa2.so.0.0.0 libraspa2.so.0; }; })
+libtool: install: (cd /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib && { ln -s -f libraspa2.so.0.0.0 libraspa2.so || { rm -f libraspa2.so && ln -s libraspa2.so.0.0.0 libraspa2.so; }; })
+libtool: install: /usr/bin/install -c .libs/libraspa2.lai /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib/libraspa2.la
+libtool: install: /usr/bin/install -c .libs/libraspa2.a /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib/libraspa2.a
+libtool: install: chmod 644 /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib/libraspa2.a
+libtool: install: ranlib /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib/libraspa2.a
+libtool: finish: PATH="/home/dydtkddhkdwk/.local/bin:/opt/cmake/bin:/home/dydtkddhkdwk/orca_6_0_1_linux_x86-64_shared_openmpi416:/home/dydtkddhkdwk/xcrysden-1.6.2-bin-shared:/usr/lib/jvm/java-8-openjdk-amd64/bin:/home/dydtkddhkdwk/qe-7.3.1/bin:/home/dydtkddhkdwk/anaconda3/bin:/home/dydtkddhkdwk/anaconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux_2.5.7.0_x64__8wekyb3d8bbwe:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/intel64/libfabric/bin:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/intel64/libfabric/bin/utils:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/intel64/bin:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/ia32:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/intel64:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/PSID_PC_20/anaconda3/Library/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Microsoft SQL Server/120/Tools/Binn:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/110/Tools/Binn:/mnt/c/Program Files (x86)/Common Files/AspenTech Shared:/mnt/c/Program Files/Common Files/AspenTech Shared:/mnt/c/Program Files/nodejs:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit:/mnt/c/Program Files/dotnet:/mnt/c/Program Files (x86)/dotnet:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/intel64:/mnt/c/Program Files (x86)/Common Files/Intel/Shared Libraries/ia32:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn:/mnt/c/Program Files/OpenBabel-3.1.1:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Python/Python37/Scripts:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Python/Python37:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Python/Python312:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/PSID_PC_20/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/Common Files/AspenTech Shared:/mnt/c/Users/PSID_PC_20/anaconda3:/mnt/c/Users/PSID_PC_20/anaconda3/Library:/mnt/c/Users/PSID_PC_20/anaconda3/Scripts:/mnt/c/Users/PSID_PC_20/AppData/Roaming/npm:/mnt/c/Program Files (x86)/Java/jdk1.8.0_202/bin:/mnt/c/Users/PSID_PC_20/Desktop/[00]Projects/[99]archive/mybinary:/mnt/c/Users/PSID_PC_20/Desktop/[00]Projects/[99]archive/[03]양자화학소프트웨어/ZANPA_binary:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/PSID_PC_20/AppData/Local/Programs/Julia-1.11.5/bin:/mnt/d/20250525_Pubchem3D_fetch:/snap/bin:/home/dydtkddhkdwk/javafx/javafx-sdk-11.0.2/bin:/home/dydtkddhkdwk/lammps/lammps-29Aug2024/build:/home/dydtkddhkdwk/.local/UCSF-Chimera64-1.19/bin/:/home/dydtkddhkdwk/PSID_server_room/packmol/packmol-21.0.2/:/sbin" ldconfig -n /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the '-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the 'LD_RUN_PATH' environment variable
+     during linking
+   - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+   - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/bin'
+  /bin/bash ../libtool   --mode=install /usr/bin/install -c simulate '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/bin'
+libtool: install: /usr/bin/install -c .libs/simulate /home/dydtkddhkdwk/.RASPA_GUI/RASPA2/bin/simulate
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/src'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/src'
+Making install in forcefield
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+Making install in ExampleMOFsForceField
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMOFsForceField'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMOFsForceField'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/ExampleMOFsForceField'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/ExampleMOFsForceField'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMOFsForceField'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMOFsForceField'
+Making install in ExampleZeolitesForceField
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleZeolitesForceField'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleZeolitesForceField'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/ExampleZeolitesForceField'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/ExampleZeolitesForceField'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleZeolitesForceField'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleZeolitesForceField'
+Making install in ExampleMoleculeForceField
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMoleculeForceField'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMoleculeForceField'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/ExampleMoleculeForceField'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/ExampleMoleculeForceField'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMoleculeForceField'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/ExampleMoleculeForceField'
+Making install in Dubbeldam2007FlexibleIRMOF-1
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-1'
+Making install in Dubbeldam2007FlexibleIRMOF-10
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-10'
+Making install in Dubbeldam2007FlexibleIRMOF-16
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Dubbeldam2007FlexibleIRMOF-16'
+Making install in Nicholas
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Nicholas'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Nicholas'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Nicholas'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/Nicholas'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Nicholas'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/Nicholas'
+Making install in CoreShellSchroderSauer
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/CoreShellSchroderSauer'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/CoreShellSchroderSauer'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/CoreShellSchroderSauer'
+ /usr/bin/install -c -m 644 pseudo_atoms.def force_field.def force_field_mixing_rules.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/forcefield/CoreShellSchroderSauer'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/CoreShellSchroderSauer'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield/CoreShellSchroderSauer'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/forcefield'
+Making install in molecules
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+Making install in ExampleDefinitions
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules/ExampleDefinitions'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules/ExampleDefinitions'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/molecules/ExampleDefinitions'
+ /usr/bin/install -c -m 644 2-methylbutane.def 23-dimethylbutane.def CO2.def Makefile Makefile.am Makefile.in N2.def O2.def argon.def butane.def ethane.def helium.def heptane.def hexane.def methane.def nonane.def octane.def pentane.def propane.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/molecules/ExampleDefinitions'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules/ExampleDefinitions'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules/ExampleDefinitions'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/molecules'
+Making install in framework
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+Making install in Dubbeldam2007FlexibleIRMOF-1
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-1'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-1'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Dubbeldam2007FlexibleIRMOF-1'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Dubbeldam2007FlexibleIRMOF-1'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-1'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-1'
+Making install in Dubbeldam2007FlexibleIRMOF-10
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-10'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-10'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Dubbeldam2007FlexibleIRMOF-10'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Dubbeldam2007FlexibleIRMOF-10'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-10'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-10'
+Making install in Dubbeldam2007FlexibleIRMOF-16
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-16'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-16'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Dubbeldam2007FlexibleIRMOF-16'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Dubbeldam2007FlexibleIRMOF-16'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-16'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Dubbeldam2007FlexibleIRMOF-16'
+Making install in CoreShellSchroderSauer
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/CoreShellSchroderSauer'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/CoreShellSchroderSauer'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/CoreShellSchroderSauer'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/CoreShellSchroderSauer'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/CoreShellSchroderSauer'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/CoreShellSchroderSauer'
+Making install in Demontis
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Demontis'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Demontis'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Demontis'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Demontis'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Demontis'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Demontis'
+Making install in DemontisModified
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/DemontisModified'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/DemontisModified'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/DemontisModified'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/DemontisModified'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/DemontisModified'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/DemontisModified'
+Making install in Nicholas
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Nicholas'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Nicholas'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Nicholas'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/Nicholas'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Nicholas'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/Nicholas'
+Making install in NicholasModified
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/NicholasModified'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/NicholasModified'
+make[3]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/NicholasModified'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in framework.def '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/framework/NicholasModified'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/NicholasModified'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework/NicholasModified'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/framework'
+Making install in structures
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+Making install in zeolites
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+Making install in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/cif'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/cif'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 AEL.cif AFI_SI.cif AFX_SI.cif ATS.cif AlPO-17.cif AlPO-5.cif BEA.cif BOG_SI.cif CFI.cif CHA_SI.cif CHA_SI_mono.cif CON.cif DDR.cif DON.cif EMT.cif ERI_SI.cif FAU_SI.cif FER.cif GME.cif ISV.cif ITQ-1.cif ITQ-12.cif ITQ-29-2x2x2.cif ITQ-29.cif ITQ-3.cif ITQ-7.cif KFI.cif LAU.cif LEV.cif LTA4A.cif LTA5A.cif LTA_SI.cif LTL_SI.cif MAZ.cif MEI.cif MEL.cif MFI_SI.cif MFI_SI_Olson.cif MFI_SI_mono.cif MFI_para.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 MFS.cif MOR_SI.cif MTW_SI.cif NaX.cif OFF.cif PAU.cif RHO.cif SAPO-47.cif SAPO-56.cif SFF.cif SOD.cif STF.cif TON.cif VFI.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/cif'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/cif'
+Making install in block
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/block'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/block'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/block'
+ /usr/bin/install -c -m 644 ATS.block BOG_SI.block CHA_SI.block DDR.block DDR_ortho.block ERI_SI.block FAU.block FER.block GME.block ITQ-12.block ITQ-29-2x2x2.block ITQ-29.block ITQ-3.block LTA_SI.block LTL_SI.block LTL_SI_ortho.cssr MFI_Olson.block MFI_SI.block MFI_mono.block MOR_SI.block MTW.block Makefile Makefile.am Makefile.in TON.block test.block '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/block'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/block'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/block'
+Making install in ions
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/ions'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/ions'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/ions'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/ions'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/ions'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites/ions'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/zeolites'
+Making install in mofs
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+Making install in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/cif'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/cif'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 CAN-12.cif COF-1.cif COF-102.cif COF-103.cif COF-105.cif COF-108.cif COF-202.cif COF-300.cif COF-5.cif Cd3BTB2.cif Co(2,6-NDP).cif Co-DOBDC.cif CoBDP-Dubbeldam.cif CoBDP.cif Cu-BTC.cif IRMOF-1-Ar.cif IRMOF-1.cif IRMOF-10.cif IRMOF-11.cif IRMOF-12.cif IRMOF-13.cif IRMOF-14.cif IRMOF-15.cif IRMOF-16.cif IRMOF-2.cif IRMOF-3.cif IRMOF-4.cif IRMOF-5.cif IRMOF-6.cif IRMOF-7.cif IRMOF-8.cif IRMOF-9.cif MAF-X8.cif MIL-100-primitive.cif MIL-100.cif MIL-101-primitive.cif MIL-101.cif MIL-140A-DFT.cif MIL-140B-DFT.cif MIL-140C-DFT.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 MIL-140D-DFT.cif MIL-47.cif MIL-53(Cr)ht.cif MIL-53(Cr)lt.cif MIL-88A-dry.cif MIL-88A-open.cif MIL-88B-dry.cif MIL-88B-open.cif MIL-88C-dry.cif MIL-88C-open.cif MIL-88D-dry.cif MIL-88D-open.cif MOF-1-Dybtsev-dmol.cif MOF-177.cif MOF-177_ortho.cif MOF-200.cif MOF-205.cif MOF-210-primitive.cif MOF-210.cif MOF-69c.cif MOF-70.cif MOF-72.cif Mg-DOBDC.cif MgMOF-74-VASP.cif MgMOF-74-extended-VASP.cif MgMOF-74.cif NU-100SP-primitive.cif NU-100SP.cif NU-108-Cu-primitive.cif NU-108-Cu.cif NU-108-Zn.cif Ni-DOBDC.cif PCN-60.cif PCN-61.cif PCN-68-primitive.cif PCN-68.cif UIO-66.cif UMCM-1.cif ZIF-1.cif ZIF-10.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 ZIF-11.cif ZIF-12.cif ZIF-2.cif ZIF-20.cif ZIF-3.cif ZIF-4.cif ZIF-5.cif ZIF-6.cif ZIF-68.cif ZIF-69-crystal.cif ZIF-69.cif ZIF-7.cif ZIF-71.cif ZIF-77.cif ZIF-8.cif ZIF-80.cif ZIF-9.cif ZIF-90.cif ZIF-93.cif ZIF-96.cif ZIF-97.cif Zn-DOBDC.cif ZnBDC.cif ZnBDCdabco.cif ZnHBDC.cif ZnMOF-74-VASP.cif ZnMOF-74.cif Zr-TPDC.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/cif'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/cif'
+Making install in block
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/block'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/block'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/block'
+ /usr/bin/install -c -m 644 Makefile Makefile.am Makefile.in '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/block'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/block'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/block'
+Making install in ions
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/ions'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/ions'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/ions'
+ /usr/bin/install -c -m 644 IRMOF-1-Ar.ions Makefile Makefile.am Makefile.in '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/ions'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/ions'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs/ions'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/mofs'
+Making install in minerals
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+Making install in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals/cif'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals/cif'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 alpha-quartz.cif coesite.cif quartz.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals/cif'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals/cif'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/minerals'
+Making install in ceramics
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+Making install in cif
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics/cif'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics/cif'
+make[4]: Nothing to be done for 'install-exec-am'.
+ /usr/bin/mkdir -p '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+ /usr/bin/install -c -m 644 SWNT-1-14.cif SWNT-1-23.cif SWNT-10-11.cif SWNT-10-13.cif SWNT-11-18.cif SWNT-3-11.cif SWNT-3-20.cif SWNT-3-9.cif SWNT-4-14.cif graphite-sheet-10.25A.cif graphite-sheet-10.65A.cif graphite-sheet-11.0A.cif graphite-sheet-11.36A.cif graphite-sheet-12.0A.cif graphite-sheet-12.78A.cif graphite-sheet-13.25A.cif graphite-sheet-13.75A.cif graphite-sheet-14.2A.cif graphite-sheet-15.0A.cif graphite-sheet-15.62A.cif graphite-sheet-17.04A.cif graphite-sheet-18.46A.cif graphite-sheet-19.88A.cif graphite-sheet-8.52A.cif graphite-sheet-9.0A.cif graphite-sheet-9.5A.cif graphite-sheet-9.94A.cif graphite-square-channel-11.36A.cif graphite-square-channel-12.78A.cif graphite-square-channel-14.2A.cif graphite-square-channel-15.62A.cif graphite-square-channel-17.04A.cif graphite-square-channel-18.46A.cif graphite-square-channel-19.88A.cif graphite-square-channel-8.52A.cif graphite-square-channel-9.94A.cif graphite.cif graphite_ortho.cif '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/share/raspa/structures/cif'
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics/cif'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics/cif'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[4]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[4]: Nothing to be done for 'install-exec-am'.
+make[4]: Nothing to be done for 'install-data-am'.
+make[4]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures/ceramics'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[3]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2/structures'
+make[1]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2'
+make[2]: Entering directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2'
+make[2]: Nothing to be done for 'install-exec-am'.
+make[2]: Nothing to be done for 'install-data-am'.
+make[2]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2'
+make[1]: Leaving directory '/home/dydtkddhkdwk/.RASPA_GUI/RASPA2'
+
+[COMMAND] cd $HOME/.RASPA_GUI/RASPA2 && cd share/raspa/forcefield/ && mkdir GarciaPerez2006ForceField && cd GarciaPerez2006ForceField && wget https://github.com/dydtkddl/PSID_server_room/blob/main/simulations/%5B02%5DRASPA/share/raspa/forcefield/GarciaPerez2006ForceField/force_field_mixing_rules.def && wget https://github.com/dydtkddl/PSID_server_room/blob/main/simulations/%5B02%5DRASPA/share/raspa/forcefield/GarciaPerez2006ForceField/pseudo_atoms.def
+--2025-05-30 14:08:27--  https://github.com/dydtkddl/PSID_server_room/blob/main/simulations/%5B02%5DRASPA/share/raspa/forcefield/GarciaPerez2006ForceField/force_field_mixing_rules.def
+Resolving github.com (github.com)... 20.200.245.247
+Connecting to github.com (github.com)|20.200.245.247|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘force_field_mixing_rules.def’
+
+     0K .......... .......... .......... .......... .......... 11.9M
+    50K .......... .......... .......... .......... .......... 12.1M
+   100K .......... .......... .......... .......... .......... 9.86M
+   150K .......... .......... .......... .......... .          12.9M=0.02s
+
+2025-05-30 14:08:27 (11.5 MB/s) - ‘force_field_mixing_rules.def’ saved [196210]
+
+--2025-05-30 14:08:28--  https://github.com/dydtkddl/PSID_server_room/blob/main/simulations/%5B02%5DRASPA/share/raspa/forcefield/GarciaPerez2006ForceField/pseudo_atoms.def
+Resolving github.com (github.com)... 20.200.245.247
+Connecting to github.com (github.com)|20.200.245.247|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘pseudo_atoms.def’
+
+     0K .......... .......... .......... .......... .......... 6.90M
+    50K .......... .......... .......... .......... .......... 12.2M
+   100K .......... .......... .......... .......... .......... 9.98M
+   150K .......... .......... .......... .........             11.9M=0.02s
+
+2025-05-30 14:08:28 (9.62 MB/s) - ‘pseudo_atoms.def’ saved [193864]
+
+
+[SUCCESS] RASPA installation completed.

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>CIF 업로드</title>
+</head>
+<body>
+  <h1>CIF 파일 업로드</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="cif_file" accept=".cif" required>
+    <button type="submit">업로드 및 렌더링</button>
+  </form>
+</body>
+</html>
+

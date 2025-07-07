@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>CIF 뷰어</title>
+  <!-- JSmol 라이브러리 로드 (j2sPath는 static/jsmol/j2s 경로) -->
+  <script type="text/javascript" src="{% static 'jsmol/JSmol.min.js' %}"></script>
+</head>
+<body>
+  <h1>JSmol CIF 뷰어</h1>
+  <div id="jsmolContainer" style="width:800px; height:600px;"></div>
+
+  <script type="text/javascript">
+    // JSmol 초기 설정
+    const Info = {
+      width: 800,
+      height: 600,
+      use: "HTML5",
+      j2sPath: "{% static 'jsmol/j2s' %}",
+      script: 'load "{{ file_url }}";',
+    };
+    // 앱릿 생성
+    const jsmolApplet = Jmol.getApplet("jsmolApplet", Info);
+    document.getElementById("jsmolContainer").innerHTML = Jmol.getAppletHtml(jsmolApplet);
+  </script>
+
+  <p><a href="{% url 'viewer:home' %}">← 다른 파일 보기</a></p>
+</body>
+</html>
+

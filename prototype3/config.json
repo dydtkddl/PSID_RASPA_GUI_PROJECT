@@ -1,0 +1,123 @@
+{
+  "raspa_dir": "$HOME/.RASPA_GUI/RASPA2",
+  "field": [
+    {
+      "key": "NumberOfCycles",
+      "value": "1000",
+      "is_list": false,
+      "selected": "10000"
+    },
+    {
+      "key": "NumberOfInitializationCycles",
+      "value": "100",
+      "is_list": false,
+      "selected": "1000"
+    },
+    {
+      "key": "PrintEvery",
+      "value": "100",
+      "is_list": false,
+      "selected": "100"
+    },
+    {
+      "key": "RestartFile",
+      "value": [
+        "no",
+        "yes"
+      ],
+      "is_list": true,
+      "selected": "no"
+    },
+    {
+      "key": "UseChargesFromCIFFile",
+      "value": [
+        "no",
+        "yes"
+      ],
+      "is_list": true,
+      "selected": "no"
+    },
+    {
+      "key": "ChargeFromChargeEquilibration",
+      "value": [
+        "no",
+        "yes"
+      ],
+      "is_list": true,
+      "selected": "no"
+    },
+    {
+      "key": "FrameworkName",
+      "value": "",
+      "is_list": false,
+      "selected": ""
+    },
+    {
+      "key": "unitcellCutoff",
+      "value": "12.0",
+      "is_list": false,
+      "selected": "12.0"
+    },
+    {
+      "key": "UnitCells",
+      "value": "MOF선택시 자동 계산",
+      "is_list": false,
+      "selected": "MOF선택시 자동 계산"
+    },
+    {
+      "key": "ExternalTemperature(K)",
+      "value": "298.0",
+      "is_list": false,
+      "selected": "298.0"
+    },
+    {
+      "key": "ExternalPressure(kPa)",
+      "value": "101325",
+      "is_list": false,
+      "selected": "101325"
+    },
+    {
+      "key": "FugacityCoefficient",
+      "value": "1.0",
+      "is_list": false,
+      "selected": "1.0"
+    },
+    {
+      "key": "TranslationProbability",
+      "value": "0.5",
+      "is_list": false,
+      "selected": "0.5"
+    },
+    {
+      "key": "RotationProbability",
+      "value": "0.5",
+      "is_list": false,
+      "selected": "0.5"
+    },
+    {
+      "key": "ReinsertionProbability",
+      "value": "0.5",
+      "is_list": false,
+      "selected": "0.5"
+    },
+    {
+      "key": "SwapProbability",
+      "value": "0.5",
+      "is_list": false,
+      "selected": "0.5"
+    },
+    {
+      "key": "CreateNumberOfMolecules",
+      "value": "0",
+      "is_list": false,
+      "selected": "0"
+    }
+  ],
+  "defaults": {
+    "Forcefield": "GarciaPerez2006ForceField",
+    "MoleculeDefinition": "ExampleMOFsForceField",
+    "MoleculeName": "CO2"
+  },
+  "LEFT_PANEL_WIDTH": 0,
+  "RIGHT_PANEL_WIDTH": 0
+}

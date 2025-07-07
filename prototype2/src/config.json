@@ -1,0 +1,28 @@
+{
+  "raspa_dir" : "$HOME/.RASPA_GUI/RASPA2",
+  "LEFT_PANEL_WIDTH" :  300,
+  "RIGHT_PANEL_WIDTH" : 800,
+  "field": [
+    { "key": "NumberOfCycles", "value": "1000" },
+    { "key": "NumberOfInitializationCycles", "value": "100" },
+    { "key": "PrintEvery", "value": "100" },
+    { "key": "RestartFile", "value": ["no", "yes"] },
+    { "key": "UseChargesFromCIFFile", "value": ["no", "yes"] },
+    { "key": "ChargeFromChargeEquilibration", "value": ["no", "yes"] },
+    { "key": "FrameworkName", "value": "" },
+    { "key": "UnitCells", "value": "MOF선택시 자동 계산" },
+    { "key": "ExternalTemperature(K)", "value": "298.0" },
+    { "key": "ExternalPressure(kPa)", "value": "101325" },
+    { "key": "FugacityCoefficient", "value": "1.0" },
+    { "key": "TranslationProbability", "value": "0.5" },
+    { "key": "RotationProbability", "value": "0.5" },
+    { "key": "ReinsertionProbability", "value": "0.5" },
+    { "key": "SwapProbability", "value": "0.5" },
+    { "key": "CreateNumberOfMolecules", "value": "0" }
+  ],
+    "defaults": {
+    "Forcefield": "GarciaPerez2006ForceField",
+    "MoleculeDefinition": "ExampleMOFsForceField",
+    "MoleculeName": "CO2"
+  }
+}

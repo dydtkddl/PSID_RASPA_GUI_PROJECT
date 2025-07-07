@@ -1,0 +1,304 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block title %}New Simulation — RASPA_GUI{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+/* ─────────── Root scale & palette ─────────── */
+:root{
+  --radius        : .75rem;
+  --space-1       : .5rem;
+  --space-2       : 1rem;
+  --space-3       : 1.618rem;
+  --space-4       : 2.618rem;
+  --gray-50       : #fafbff;
+  --gray-100      : #f1f3f9;
+  --gray-300      : #dce0eb;
+  --gray-500      : #7c8498;
+  --gray-800      : #1e2331;
+  --primary       : #5865f2;
+  --primary-dark  : #4350e6;
+  --accent        : #ffb302;
+  --shadow        : 0 6px 18px rgba(0,0,0,.08);
+  font-size: 16px;
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  color: var(--gray-800);
+  background: var(--gray-50);
+}
+
+/* ─────────── Generic helpers ─────────── */
+.flex          { display:flex; }
+.items-center  { align-items:center; }
+.just-between  { justify-content:space-between; }
+.btn           { cursor:pointer; user-select:none; border:none; outline:none; transition:.25s; }
+.fw-600        { font-weight:600; }
+.mb-2          { margin-bottom:var(--space-2); }
+.rounded       { border-radius:var(--radius); }
+
+/* ─────────── Layout wrapper ─────────── */
+.content-wrapper{
+  max-width:840px;
+  margin:0 auto;
+  padding:0 var(--space-3) var(--space-4);
+}
+
+/* ─────────── Top Bar ─────────── */
+.page-bar{
+  margin: var(--space-4) 0 var(--space-3);
+}
+h2{
+  font-size:1.75rem;
+  font-weight:700;
+  letter-spacing:-.02em;
+  margin:0;
+}
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+  padding:.65rem 1.5rem;
+  border-radius:9999px;
+  font-weight:600;
+}
+.btn-primary:hover{
+  background:var(--primary-dark);
+  box-shadow:var(--shadow);
+  transform:translateY(-2px);
+}
+
+/* ─────────── Card (accordion) ─────────── */
+.card{
+  background:#fff;
+  border:1px solid var(--gray-100);
+  box-shadow: var(--shadow);
+  margin-bottom:var(--space-3);
+  overflow:hidden;
+}
+.card-header{
+  cursor:pointer;
+  padding:var(--space-2) var(--space-3);
+  font-size:1.1rem;
+  font-weight:600;
+  position:relative;
+}
+.card-header .icon{
+  margin-right:var(--space-2);
+  color:var(--primary);
+}
+.card-header::after{
+  content:"\f107";            /* Font Awesome chevron-down */
+  font-family:"Font Awesome 6 Free"; font-weight:900;
+  position:absolute; right:var(--space-3); top:50%; translate:0 -50%;
+  transition:transform .25s;
+}
+.card.collapsed .card-header::after{ transform:rotate(-90deg); }
+
+/* body 영역: max-height 전환으로 부드럽게 열고 닫힘 */
+.card-body{
+  padding:var(--space-3) var(--space-3) var(--space-4);
+  max-height:1000px;                 /* 충분히 크게 */
+  overflow:hidden;
+  transition:max-height .25s ease, padding .25s ease;
+}
+.card.collapsed .card-body{
+  max-height:0;
+  padding:0 var(--space-3);
+}
+
+/* ─────────── Form elements ─────────── */
+.form-field{ display:flex; flex-direction:column; margin-bottom:var(--space-2); }
+.form-field label{ font-size:.95rem; font-weight:600; margin-bottom:.325rem; color:var(--gray-500); }
+input,select{
+  padding:.6rem .75rem;
+  font-size:1rem;
+  border:1px solid var(--gray-300);
+  border-radius:var(--radius);
+  background:#fff;
+  color:var(--gray-800);
+  transition:border .2s, box-shadow .2s;
+}
+input:focus,select:focus{ border-color:var(--primary); box-shadow:0 0 0 3px rgba(88,101,242,.15); }
+
+/* ─────────── Drop zone ─────────── */
+#drop-zone{
+  border:2px dashed var(--gray-300);
+  border-radius:var(--radius);
+  padding:var(--space-3);
+  text-align:center;
+  color:var(--gray-500);
+  font-weight:500;
+  transition:border .25s, background .25s;
+}
+#drop-zone.bg-active{
+  border-color:var(--primary);
+  background:rgba(88,101,242,.05);
+}
+#drop-zone:hover{ border-style:solid; border-color:var(--primary); }
+
+/* JSmol area */
+#jsmolContainer{
+  width:100%; max-width:560px; aspect-ratio:1/1;
+  margin: var(--space-3) auto 0;
+  border:1px solid var(--gray-300);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+
+/* tiny utility */
+.hidden{display:none;}
+</style>
+
+<div class="content-wrapper">
+
+  <!-- Top bar -->
+  <div class="page-bar flex items-center just-between">
+    <h2>🆕 New Simulation</h2>
+    <button form="simForm" type="submit" class="btn btn-primary">🚀 Run RASPA</button>
+  </div>
+
+  <!-- ========== Main form ========== -->
+  <form id="simForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" id="MoleculeDefinition" name="MoleculeDefinition" value="ExampleDefinitions">
+
+    <!-- ▽ General settings (처음에 닫힘) -->
+    <div class="card collapsed" id="card-general">
+      <div class="card-header flex items-center"><i class="fa-solid fa-sliders icon"></i>General Settings</div>
+      <div class="card-body">
+        {% for f in config.field %}
+          <div class="form-field">
+            <label for="{{ f.key }}">{{ f.key }}</label>
+            {% if f.is_list %}
+              <select id="{{ f.key }}" name="{{ f.key }}">
+                {% for opt in f.value %}
+                  <option value="{{ opt }}" {% if opt == f.selected %}selected{% endif %}>{{ opt }}</option>
+                {% endfor %}
+              </select>
+            {% else %}
+              <input id="{{ f.key }}" name="{{ f.key }}" value="{{ f.selected }}">
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ▽ Forcefield & Molecule (처음에 닫힘) -->
+    <div class="card collapsed" id="card-forcefield">
+      <div class="card-header flex items-center"><i class="fa-solid fa-flask icon"></i>Forcefield & Molecule</div>
+      <div class="card-body">
+        <div class="form-field">
+          <label for="Forcefield">Forcefield</label>
+          <select id="Forcefield" name="Forcefield">
+            {% for ff in forcefields %}
+              <option value="{{ ff }}" {% if ff == defaults.Forcefield %}selected{% endif %}>{{ ff }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="MoleculeName">Molecule Name</label>
+          <select id="MoleculeName" name="MoleculeName">
+            {% for mn in molecules %}
+              <option value="{{ mn }}" {% if mn == defaults.MoleculeName %}selected{% endif %}>{{ mn }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ▽ CIF Selection (처음에 열림) -->
+    <div class="card" id="card-cif">
+      <div class="card-header flex items-center"><i class="fa-solid fa-cube icon"></i>CIF Selection</div>
+      <div class="card-body">
+        <div id="drop-zone" class="rounded">📁 Drop CIF file here or click to upload
+          <input type="file" id="cifInput" accept=".cif" hidden>
+        </div>
+        <div id="jsmolContainer" class="rounded"></div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- ─────────── Scripts ─────────── -->
+<script src="{% static 'jsmol/JSmol.min.js' %}"></script>
+<script>
+/* ---------------- JSmol init ---------------- */
+const Info={ width:'100%', height:'100%', use:'HTML5',   j2sPath:'{% static "jsmol/j2s" %}' };
+document.getElementById('jsmolContainer').innerHTML=Jmol.getAppletHtml('jmolApplet',Info);
+const jmolApplet=Jmol.getApplet('jmolApplet',Info);
+
+/* ---------------- Accordion ---------------- */
+document.addEventListener('DOMContentLoaded',() => {
+  /* 초기 상태에 맞춰 max-height 지정 */
+  document.querySelectorAll('.card').forEach(card=>{
+    const body=card.querySelector('.card-body');
+    if(card.classList.contains('collapsed')){
+      body.style.maxHeight='0';
+      body.style.padding='0 var(--space-3)';
+    }else{
+      body.style.maxHeight=body.scrollHeight+'px';
+    }
+  });
+
+  /* 토글 클릭 */
+  document.querySelectorAll('.card-header').forEach(h=>{
+    h.addEventListener('click',()=>{
+      const card=h.parentNode;
+      const body=card.querySelector('.card-body');
+      card.classList.toggle('collapsed');
+
+      if(card.classList.contains('collapsed')){
+        /* 닫힘 */
+        body.style.maxHeight='0';
+        body.style.padding='0 var(--space-3)';
+      }else{
+        /* 열림 */
+        body.style.padding='var(--space-3) var(--space-3) var(--space-4)';
+        body.style.maxHeight=body.scrollHeight+'px';
+      }
+    });
+  });
+});
+
+/* ---------------- Drop zone ---------------- */
+const dz         = document.getElementById('drop-zone');
+const fileInput  = document.getElementById('cifInput');
+dz.addEventListener('click',()=>fileInput.click());
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('bg-active');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('bg-active'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('bg-active');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change',()=>handleFile(fileInput.files[0]));
+
+function handleFile(file){
+  if(!file.name.toLowerCase().endsWith('.cif')){ return alert('Only CIF files are allowed'); }
+  dz.textContent='✅ '+file.name;
+  document.getElementById('FrameworkName').value=file.name.replace(/\.cif$/i,'');
+  file.text().then(txt=>Jmol.script(jmolApplet,`load DATA "model"\n${txt}\nEND "model"`));
+
+  const cutoff=parseFloat(document.querySelector('[name="unitcellCutoff"]')?.value)||0;
+  const form=new FormData(); form.append('cif_file',file); form.append('cutoff',cutoff);
+  fetch("{% url 'ucell_api' %}",{
+    method:'POST',
+    headers:{'X-CSRFToken':getCookie('csrftoken')},
+    body:form
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.error) throw new Error(d.error);
+    document.querySelector('[name="UnitCells"]').value=`${d.nx}, ${d.ny}, ${d.nz}`;
+  })
+  .catch(err=>alert('Unit cell calc error: '+err.message));
+}
+
+/* CSRF helper */
+function getCookie(name){
+  return document.cookie.split(';').reduce((acc,c)=>{
+    const [k,v]=c.trim().split('='); return k===name?decodeURIComponent(v):acc;
+  },null);
+}
+</script>
+{% endblock %}

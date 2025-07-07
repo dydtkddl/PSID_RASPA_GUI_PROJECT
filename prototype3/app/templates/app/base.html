@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}RASPA_GUI{% endblock %}</title>
+
+  <!-- 1. 외부 폰트 · 아이콘 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 2. 디자인 토큰 + 리셋 -->
+  <style>
+  :root{
+    /* space */
+    --gap-1: .6rem;  --gap-2: 1rem;  --gap-3: 1.618rem;  /* φ */
+    /* palette */
+    /* background:;color:#fff */
+    --bg      : #F6F8FC;
+    --header1 : #2c3e50;
+    --header2 : #2c3e50;
+    --surface : #FFFFFF;
+    --txt     : #1E2331;
+    --muted   : #6B7280;
+    --shadow  : 0 6px 18px rgba(0,0,0,.07);
+    /* radius */
+    --radius  : .75rem;
+    /* font */
+    --font    : "Poppins", Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html{scroll-behavior:smooth;font-size:16px;}
+  body{
+    background:var(--bg); color:var(--txt);
+    font-family:var(--font); -webkit-font-smoothing:antialiased;
+  }
+
+  /************* Header *************/
+  header{
+    position:sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:calc(var(--gap-2) - .2rem) var(--gap-3);
+    background:linear-gradient(90deg,var(--header1) 0%,var(--header2) 100%);
+    color:#fff; box-shadow:var(--shadow);
+  }
+  .logo{
+    display:flex; align-items:center; gap:.5rem;
+    font-size:1.25rem; font-weight:600; color:#fff; text-decoration:none;
+  }
+  nav{display:flex; gap:var(--gap-1);}
+  nav a{
+    position:relative;
+    padding:.45rem 1rem; font-size:.95rem; font-weight:500;
+    color:#fff; text-decoration:none; border-radius:9999px;
+    transition:background .25s, transform .25s;
+  }
+  nav a:hover{background:rgba(255,255,255,.18); transform:translateY(-2px);}
+  nav a:active{transform:scale(.95);}
+  @media(max-width:600px){
+    nav a{font-size:.875rem;padding:.4rem .8rem;}
+    .logo{font-size:1.1rem;}
+  }
+
+  /************* Main *************/
+  main{
+    max-width:1200px;
+    margin-inline:auto;
+    padding:var(--gap-3) var(--gap-2) var(--gap-3);
+  }
+  </style>
+</head>
+
+<body>
+  <!-- 1) 헤더 -->
+  <header>
+    <!-- 로고 (↩︎ 홈) -->
+    <a href="{% url 'simulations' %}" class="logo">
+      <i class="fa-solid fa-flask-vial"></i> RASPA_GUI
+    </a>
+
+    <!-- 내비게이션 -->
+    <nav>
+      <a href="{% url 'new_simulation' %}"><i class="fa-solid fa-circle-plus"></i> New</a>
+      <a href="{% url 'simulations' %}"><i class="fa-solid fa-list"></i> Runs</a>
+      <a href="{% url 'settings' %}"><i class="fa-solid fa-gear"></i> Settings</a>
+    </nav>
+  </header>
+
+  <!-- 2) 본문 -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

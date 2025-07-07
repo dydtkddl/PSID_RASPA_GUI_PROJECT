@@ -1,0 +1,458 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block title %}⚗️ {{ sim_name }} — Simulation Detail{% endblock %}
+
+{% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+/* ─────────────── Global Design Tokens ─────────────── */
+:root{
+  --gap-xs:.5rem; --gap-sm:.9rem; --gap-md:1.4rem; --gap-lg:2.2rem;
+  --radius:1rem;
+
+  --font:"Poppins",Helvetica,Arial,sans-serif;
+  --fs-lg:1.75rem; --fs-md:1.05rem; --fs-sm:.9rem;
+
+  --bg:#F6F8FC;
+  --surface:#FFFFFF;
+  --txt:#1F2333;
+  --muted:#6B7280;
+  --primary:#6366F1;
+  --primary-dark:#4F52DC;
+  --card-shadow:0 4px 18px rgba(0,0,0,.06);
+
+  --grad-run :linear-gradient(135deg,#FDBA74,#FB923C);
+  --grad-fin :linear-gradient(135deg,#34D399,#059669);
+  --grad-err :linear-gradient(135deg,#F87171,#DC2626);
+  --grad-pend:linear-gradient(135deg,#9CA3AF,#6B7280);
+}
+
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--font);-webkit-font-smoothing:antialiased;}
+
+/* ─────────────── Layout & Card ─────────────── */
+.wrapper{max-width:1280px;margin:0 auto;padding:var(--gap-lg);display:flex;flex-direction:column;gap:var(--gap-lg);}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;transition:transform .25s,box-shadow .25s;}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.08);}
+
+/* ─────────────── Header / Status ribbon ─────────────── */
+.head{padding:var(--gap-md);display:flex;align-items:center;gap:var(--gap-sm);color:#fff;}
+.head h2{margin:0;font-size:var(--fs-lg);font-weight:600;display:flex;align-items:center;gap:.5rem;}
+.badge{font-size:var(--fs-sm);font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.9;}
+.head.running   {background:var(--grad-run);}
+.head.finished  {background:var(--grad-fin);}
+.head.error     {background:var(--grad-err);}
+.head.no_output {background:var(--grad-pend);}
+
+/* Buttons */
+.action-btn{
+  display:flex;align-items:center;gap:.45rem;
+  border:none;border-radius:9999px;
+  font-size:var(--fs-sm);font-weight:500;cursor:pointer;
+  padding:.5rem 1.1rem;transition:background .2s;
+}
+.delete-btn{background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(4px);}
+.delete-btn:hover{background:rgba(255,255,255,.30);}
+.refresh-btn{background:#fff;color:var(--primary);}
+.refresh-btn:hover{background:#EEF0FF;}
+
+@supports not (backdrop-filter:blur(4px)){
+  .delete-btn{background:rgba(255,255,255,.25);}
+}
+
+/* ─────────────── Tabs ─────────────── */
+.tabs{display:flex;gap:var(--gap-xs);padding:var(--gap-xs) var(--gap-md);}
+.tabs button{
+  flex:1;background:var(--surface);border:2px solid transparent;border-radius:var(--radius);
+  padding:var(--gap-xs) var(--gap-md);box-shadow:var(--card-shadow);
+  font-size:var(--fs-md);font-weight:500;color:var(--muted);
+  cursor:pointer;white-space:nowrap;transition:transform .2s,border-color .2s,color .2s,background .2s;
+}
+.tabs button.active{background:var(--primary);color:#fff;transform:translateY(-2px);}
+.tabs button:hover:not(.active){border-color:var(--primary);}
+/* 1) 부모 컨테이너에 상대 기준 추가 */
+.sections {
+  position: relative;
+  /* 필요하다면 최소 높이 지정 */
+  min-height: 500px;
+}
+
+/* 2) 모든 섹션을 겹치도록 절대 위치 */
+.sections > section {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  /* 높이는 내부 콘텐츠에 맡기고, 항상 존재 */
+  opacity: 0;
+  pointer-events: none;        /* 클릭 무시 */
+  transition: opacity .25s ease;
+}
+.rounded       { border-radius:var(--radius); }
+
+/* 3) active 탭만 보이게 */
+.sections > section.active {
+  opacity: 1;
+  pointer-events: all;         /* 클릭 허용 */
+  z-index: 1;                  /* 위로 올리기 */
+}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.section-desc{color:var(--muted);font-size:var(--fs-sm);margin:0 0 var(--gap-md);}
+
+/* ─────────────── Meta Cards ─────────────── */
+.meta-grid{display:grid;gap:var(--gap-md);}
+.meta-top {grid-template-columns:repeat(auto-fill,minmax(440px,1fr));}
+.meta-long{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+.meta-card{
+  background:var(--surface);border-radius:calc(var(--radius) - 2px);box-shadow:var(--card-shadow);
+  padding:var(--gap-sm) var(--gap-md);display:flex;flex-direction:column;align-items:center;gap:var(--gap-xs);
+}
+.meta-card .label{font-size:var(--fs-sm);font-weight:600;color:var(--muted);text-transform:uppercase;}
+.meta-card .value{font-size:1.35rem;font-weight:600;}
+
+.table{width:100%;border-collapse:collapse;margin-top:var(--gap-md);}
+.table th,.table td{border:1px solid #E3E7EF;padding:var(--gap-xs) var(--gap-sm);}
+.table th{background:#EFF2F8;text-align:left;font-size:var(--fs-sm);}
+.table td{font-size:var(--fs-sm);}
+
+/* ─────────────── Code / Log & Data boxes ─────────────── */
+.textbox{
+  background:#1E1E1E;color:#D4D4D4;font-family:"Fira Code",Consolas,monospace;
+  padding:var(--gap-md);border-radius:.6rem;white-space:pre-wrap;overflow:auto;max-height:500px;
+  line-height:1.5;font-size:.85rem;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.textbox::-webkit-scrollbar{height:8px;width:8px;}
+.textbox::-webkit-scrollbar-thumb{background:#3C3C3C;border-radius:4px;}
+
+/* ─────────────── Chart Box ─────────────── */
+.chart-box{width:100%;height:400px;position:relative;}
+.chart-box canvas{width:100%!important;height:100%!important;}
+
+@media (max-width:640px){
+  .head h2{font-size:1.35rem;}
+  .action-btn{padding:.45rem .85rem;}
+}
+#jsmolContainer{
+  width:100%; max-width:560px; aspect-ratio:1/1;
+  margin: var(--space-3) auto 0;
+  border:1px solid var(--gray-300);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+/* 카드(body) 전체를 flex 컨테이너로 바꾸고 */
+#cifviewer .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* 기본으로 모든 아이템을 가로 중앙 */
+  justify-content: center;   /* (선택) 세로 중앙 정렬 */
+  gap: var(--gap-md);
+  min-height: 520px;
+  padding: var(--gap-md);
+}
+
+/* “구조 보기” 텍스트만 좌측 정렬 */
+#cifviewer .card .section-desc {
+  align-self: flex-start;    /* 좌측으로 밀어붙이기 */
+  /* 필요 시 텍스트도 왼쪽 정렬 */
+  text-align: left;
+  margin : 0px;
+}
+
+/* jsMol 컨테이너 크기 지정 (비율 유지) */
+#jsmolContainer {
+  width: 100%;
+  max-width: 560px;
+  height: 100%;     /* 부모 카드의 min-height에 맞춰 늘어납니다 */
+  aspect-ratio: 1;  /* 정사각형 유지 */
+}
+.divider {
+  width: 100%;
+  height: 1px;
+  margin:0px;
+  background: rgb(138, 133, 133);
+  border-radius: 5px;
+  align-self: start;
+}
+
+</style>
+
+<div class="wrapper">
+  <!-- Header -->
+  <div class="card">
+    <div class="head {{ status|lower }}">
+      <h2>🔬 {{ sim_name }}</h2>
+      <span class="badge">{{ status }}</span>
+
+      <!-- 새로고침 버튼 -->
+      <button type="button" id="refreshBtn" class="action-btn refresh-btn">
+        <i class="fa-solid fa-rotate-right"></i> Refresh
+      </button>
+
+      <!-- 삭제 버튼 -->
+      <form method="post" action="{% url 'delete_simulation' sim_name %}"
+            class="delete-form" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+        {% csrf_token %}
+        <button type="submit" class="action-btn delete-btn">
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>
+      </form>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button data-target="meta"  class="active">📄 Meta</button>
+      <button data-target="cifviewer">🔮 CIF Viewer</button>
+      <button data-target="load">📈 Loading</button>
+      <button data-target="log">🪵 Log</button>
+      <button data-target="data">💾 Data</button>
+    </div>
+  </div>
+
+  <!-- Sections -->
+  <div class="sections">
+    <!-- Meta -->
+    <section id="meta" class="active">
+      <div class="card" style="padding:var(--gap-md);">
+        <p class="section-desc">시뮬레이션 메타데이터</p>
+        <div id="metaTop"  class="meta-grid meta-top"></div>
+        <div id="metaLong" class="meta-grid meta-long" style="margin-top:var(--gap-md);"></div>
+        <table id="metaTable" class="table"></table>
+      </div>
+    </section>
+<section id="cifviewer">
+  <div class="card" style="padding:var(--gap-md);">
+    <p class="section-desc">구조 보기 (CIF Viewer)</p>
+      <div class="divider"></div>
+    <div id="jsmolContainer" class="rounded" ></div>
+  </div>
+</section>
+    <!-- Loading -->
+<section id="load">
+  <div class="card p-md">
+    <div class="d-flex justify-content-between align-items-baseline mb-2">
+      <p class="section-desc m-0">사이클별 로딩 변화</p>
+
+      {# ● 통계 표시용 <span> 추가  #}
+      <span id="loadingStats" class="badge bg-primary-subtle text-primary fw-semibold"
+            style="font-size:.9rem;"></span>
+    </div>
+
+    <div class="chart-box"><canvas id="loadChart"></canvas></div>
+  </div>
+</section>
+
+    <!-- Log -->
+    <section id="log">
+      <div class="card" style="padding:var(--gap-md);">
+        <p class="section-desc">로그 출력</p>
+        <div id="logBox" class="textbox">{{ log_text }}</div>
+      </div>
+    </section>
+
+    <!-- Data -->
+    <section id="data">
+      <div class="card" style="padding:var(--gap-md);">
+        <p class="section-desc">데이터 파일</p>
+        <div id="dataBox" class="textbox">{{ data_text }}</div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Libraries -->
+<script src="{% static 'jsmol/JSmol.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/********************************************
+  Helpers & Constants
+*********************************************/
+const css = (prop) => getComputedStyle(document.documentElement).getPropertyValue(prop).trim();
+const refreshURL = "{% url 'simulation_refresh_api' sim_name %}";
+const Info = {    width: '100%', height: '500',     use: 'HTML5',    j2sPath: '{% static "jsmol/j2s" %}' };
+document.getElementById('jsmolContainer').innerHTML  = Jmol.getAppletHtml('jmolApplet', Info);
+const jmolApplet = Jmol.getApplet('jmolApplet', Info);
+ 
+/********************************************
+  Tab Navigation
+*********************************************/
+const tabs = document.querySelectorAll('.tabs button');
+const secs = document.querySelectorAll('.sections>section');
+let loadChart, chartReady = false;
+
+tabs.forEach(btn => btn.addEventListener('click', () => {
+  tabs.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  secs.forEach(s => s.classList.remove('active'));
+  document.getElementById(btn.dataset.target).classList.add('active');
+
+  if (btn.dataset.target === 'load' && chartReady) loadChart.resize();
+}));
+
+/********************************************
+  Meta Rendering (static)
+*********************************************/
+const meta = {{ siminput_info|safe }};
+const topK = [
+  {k:'FrameworkName',             l:'Framework'},
+  {k:'Component 0 MoleculeName',  l:'Gas'},
+  {k:'ExternalTemperature',       l:'Temp (K)'},
+  {k:'ExternalPressure',          l:'Pressure (Pa)'}
+];
+const longK = [
+  {k:'NumberOfCycles',               l:'Cycles'},
+  {k:'NumberOfInitializationCycles', l:'Init Cycles'},
+  {k:'PrintEvery',                   l:'Print Every'}
+];
+function addMeta(item, holder){
+  document.getElementById(holder)
+    .insertAdjacentHTML('beforeend',`
+      <div class="meta-card">
+        <div class="label">${item.l}</div>
+        <div class="value">${meta.global?.[item.k] ?? '—'}</div>
+      </div>`);
+}
+topK.forEach(i=>addMeta(i,'metaTop'));
+longK.forEach(i=>addMeta(i,'metaLong'));
+
+const tbl = document.getElementById('metaTable');
+tbl.insertAdjacentHTML('beforeend','<tr><th>Property</th><th>Value</th></tr>');
+const skip = [...topK,...longK].map(i=>i.k);
+Object.entries(meta.global??{}).forEach(([k,v])=>{
+  if(!skip.includes(k)) tbl.insertAdjacentHTML('beforeend',`<tr><td>${k}</td><td>${v}</td></tr>`);
+});
+['frameworks','components'].forEach(n=>{
+  const arr=meta[n]??[];
+  tbl.insertAdjacentHTML('beforeend',`<tr><td>${n[0].toUpperCase()+n.slice(1)}</td><td>${arr.length?JSON.stringify(arr):'None'}</td></tr>`);
+});
+
+/********************************************
+  Chart.js – Loading Trend
+*********************************************/
+/*****  (기존) raw series  *****/
+const loadSeries = {{ load_series|safe }};
+const cycles = loadSeries.map(e => e[1]);
+const vals   = loadSeries.map(e => e[2]);
+
+/*****  ● Running-Average 계산  *****/
+const runAvg = vals.map((v,i) => vals.slice(0,i+1).reduce((a,b)=>a+b,0)/(i+1));
+
+/*****  ● Chart.js 그래디언트 & 색상  *****/
+const primaryLine  = css('--primary-dark') || '#4F52DC';
+const averageColor = '#22c55e';   // 초록 계열
+
+/*****  Chart 생성  *****/
+const ctx = document.getElementById('loadChart').getContext('2d');
+loadChart = new Chart(ctx, {
+  type:'line',
+  data:{
+    labels: cycles,
+    datasets:[
+      { // 원래 Loading
+        label:'Loading',
+        data: vals,
+        fill:true,
+        // backgroundColor: grad,
+        borderColor: primaryLine,
+        tension:.35,
+        pointRadius:2,
+        pointBackgroundColor:primaryLine
+      },
+      { // ● Running Average
+        label:'Running Avg.',
+        data: runAvg,
+        fill:false,
+        borderColor: averageColor,
+        borderDash:[6,4],
+        tension:.25,
+        pointRadius:1.5,
+        pointBackgroundColor: averageColor
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{
+      x:{title:{display:true,text:'Cycle'}},
+      y:{title:{display:true,text:'Loading'}}
+    },
+    plugins:{
+      legend:{display:true, position:'top'}
+    }
+  }
+});
+chartReady = true;
+
+/*****  ● Stats 텍스트 업데이트 함수  *****/
+function updateStats(){
+  const cycles = loadChart.data.labels;
+  const vals   = loadChart.data.datasets[0].data;
+  const avgArr = loadChart.data.datasets[1].data;
+
+  if(cycles.length === 0 || vals.length === 0 || avgArr.length === 0){
+    document.getElementById('loadingStats').textContent = 'No data yet';
+    return;
+  }
+
+  const currentIdx   = vals.length - 1;
+  const currentCycle = cycles[currentIdx];
+  const currentLoad  = vals[currentIdx]?.toFixed(3) ?? '—';
+  const currentAvg   = avgArr[currentIdx]?.toFixed(3) ?? '—';
+
+  /* 초기화(Initialization)인지 판정: currentCycle < 초기_cycles */
+  const initCycles = {{ NumberOfInitializationCycles|default:"0" }};
+  const phase = currentCycle < initCycles ? 'Init' : 'Normal';
+
+  document.getElementById('loadingStats').innerText =
+    `Cycle ${currentCycle} (${phase}) · Avg ${currentAvg} · Load ${currentLoad}`;
+}
+
+updateStats();   // 최초 1회 호출
+new ResizeObserver(()=>loadChart.resize()).observe(document.querySelector('.chart-box'));
+window.addEventListener('orientationchange',()=>loadChart.resize());
+
+/********************************************
+  Refresh Button Logic
+*********************************************/
+document.getElementById('refreshBtn').addEventListener('click', async ()=>{
+  try{
+    console.log(1111)
+    const res = await fetch(refreshURL);
+    const data = await res.json();
+
+    /* 1) 상태 배지 & 헤더 색상 */
+    const head  = document.querySelector('.head');
+    const badge = head.querySelector('.badge');
+    head.classList.remove('running','finished','error','no_output');
+    head.classList.add(data.status.toLowerCase());
+    badge.textContent = data.status;
+
+    /* 2) 로그 & 데이터 텍스트 */
+    document.getElementById('logBox').textContent  = data.log_text;
+    document.getElementById('dataBox').textContent = data.data_text;
+
+    /* 3) 그래프 갱신 */
+    const cycles = data.load_series.map(e=>e[1]);
+    const vals   = data.load_series.map(e=>e[2]);
+  loadChart.data.labels = cycles;         // 새 배열로 교체
+  loadChart.data.datasets[0].data = vals;
+  loadChart.data.datasets[1].data = runAvg;
+  loadChart.update();
+  /* 3) 상단 텍스트 갱신 */
+  updateStats();
+  }catch(err){
+    console.error('Refresh failed:', err);
+    alert('새로고침에 실패했습니다.');
+  }
+});
+  const cifText = `{{ ciftext|escapejs }}`;
+  console.log(cifText)
+    Jmol.script(          jmolApplet,          `load DATA "model"\n${cifText}\nEND "model";`    );
+</script>
+
+{% endblock %}
