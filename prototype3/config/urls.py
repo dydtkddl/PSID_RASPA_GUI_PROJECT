@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('app/', include('app.urls')),    # viewer 앱으로 포워딩
+    path('', include('app.urls')),    # viewer 앱으로 포워딩
 ]
 
 # media 서빙

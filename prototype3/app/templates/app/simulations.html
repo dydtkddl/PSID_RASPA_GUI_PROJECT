@@ -1,358 +1,288 @@
 {% extends "app/base.html" %}
 {% load static %}
-
+{% load tz %}
 {% block title %}Simulations — RASPA_GUI{% endblock %}
 
 {% block content %}
 <style>
-/* ────────────────
-   글로벌 변수
-──────────────── */
-:root {
-  --card-bg: #ffffff;
-  --card-radius: 1rem;
-  --shadow-color: rgba(0, 0, 0, 0.08);
-  --badge-radius: 1rem;
+  /* ──────────────── 글로벌 변수 ──────────────── */
+  :root {
+    --card-bg: #ffffff;
+    --card-radius: 1rem;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --badge-radius: 1rem;
 
-  --header-bg-start: #6b73ff;
-  --header-bg-end:   #000dff;
-  --running-start:   #ff9b00; --running-end:  #ff6a00;
-  --finished-start:  #00d26a; --finished-end:  #009245;
-  --error-start:     #ff4e4e; --error-end:    #c60000;
-  --pending-start:   #ffd400; --pending-end:   #ffb200;
+    --header-bg-start: #6b73ff;
+    --header-bg-end:   #000dff;
+    --running-start:   #ff9b00; --running-end:  #ff6a00;
+    --finished-start:  #00d26a; --finished-end:  #009245;
+    --error-start:     #ff4e4e; --error-end:    #c60000;
+    --pending-start:   #ffd400; --pending-end:   #ffb200;
 
-  --header-txt: #fff;
-  --info-txt:   #333;
-  --footer-txt: #666;
+    --header-txt: #fff;
+    --info-txt:   #333;
+    --footer-txt: #666;
 
-  --color-running:  #fff4e5; --border-running:  #ff9b00;
-  --color-finished: #e6f9ed; --border-finished: #00d26a;
-  --color-error:    #fde8e8; --border-error:    #ff4e4e;
-  --color-pending:  #fff8e0; --border-pending:  #ffd400;
-    --grad-pend:linear-gradient(135deg,#9CA3AF,#6B7280);
-}
+    --color-running:  #fff4e5; --border-running:  #ff9b00;
+    --color-finished: #e6f9ed; --border-finished: #00d26a;
+    --color-error:    #fde8e8; --border-error:    #ff4e4e;
+    --color-pending:  #fff8e0; --border-pending:  #ffd400;
+    --grad-pend: linear-gradient(135deg,#9CA3AF,#6B7280);
+  }
 
-/* ────────────────
-   뷰 토글 버튼
-──────────────── */
-.view-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;  /* 좌우로 분리 */
-  padding: 1rem 2rem;
-}
+  /* ──────────────── 토글 컨테이너 ──────────────── */
+  .view-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #f5f7fa;
+    border-radius: .75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    gap: .75rem;
+  }
 
-/* 왼쪽 그룹(카드뷰/리스트뷰) 묶기 */
-/* ────────────────
-   뷰 토글 컨테이너 (전체 배경 & 패딩)
-──────────────── */
-.view-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #f5f7fa;
-  border-radius: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 1.5rem;
-}
+  /* ──────────────── 뷰 전환 버튼 그룹 ──────────────── */
+  .view-group {
+    display: flex;
+    gap: .5rem;
+  }
+  .view-group button {
+    padding: .6rem 1.2rem;
+    font-size: .95rem;
+    font-weight: 500;
+    color: #555;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: color .3s, background .3s, box-shadow .3s;
+  }
+  .view-group button:hover { color: #333; }
+  .view-group button.active {
+    color: #fff;
+    background: #6b73ff;
+    box-shadow: 0 4px 12px rgba(107,115,255,0.4);
+  }
 
-/* ────────────────
-   좌측: 카드/리스트 토글 버튼 그룹
-──────────────── */
-.view-toggle .view-group {
-  display: flex;
-  gap: 0.5rem;
-}
+  /* ──────────────── 상태 필터 버튼 그룹 ──────────────── */
+  .status-group {
+    display: flex;
+    gap: .5rem;
+  }
+  .status-group button {
+    padding: .6rem 1.2rem;
+    font-size: .95rem;
+    font-weight: 500;
+    color: #e74c3c;
+    background: #fff;
+    border: 2px solid #e74c3c;
+    border-radius: .5rem;
+    cursor: pointer;
+    transition: background .3s, color .3s;
+  }
+  .status-group button:hover { background: #ffeaea; }
+  .status-group button.active {
+    background: #e74c3c;
+    color: #fff;
+  }
+  .status-group button.inactive { opacity: .5; }
 
-.view-group button {
-  position: relative;
-  padding: 0.6rem 1.2rem;
-  font-size: .95rem;
-  font-weight: 500;
-  color: #555;
-  background: transparent;
-  border: 2px solid transparent;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: 
-    color 0.3s ease, 
-    background 0.3s ease, 
-    box-shadow 0.3s ease;
-}
+  /* ──────────────── 선택/삭제 버튼 그룹 ──────────────── */
+  .action-group {
+    display: flex;
+    gap: .5rem;
+  }
+  .action-group button {
+    padding: .6rem 1.2rem;
+    font-size: .95rem;
+    font-weight: 500;
+    color: #fff;
+    background: #84da4e;
+    border: none;
+    border-radius: 9999px;
+    box-shadow: 0 4px 12px rgba(132,218,78,0.4);
+    cursor: pointer;
+    transition: background .3s, transform .2s, box-shadow .2s;
+  }
+  .action-group button:hover:not(:disabled) {
+    background: #6dc13f;
+    transform: translateY(-2px);
+  }
+  .action-group button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(132,218,78,0.3);
+  }
+  #select-mode-btn { background: #ccc; color: #333; }
+  #select-mode-btn.active { background: #e74c3c; color: #fff; }
+  #delete-selected:disabled { background: #ddd; color: #888; cursor: not-allowed; }
 
-.view-group button:hover {
-  color: #333;
-}
+  /* ──────────────── 카드/리스트 표시 토글 ──────────────── */
+  .card-view, .list-view { display: none; }
+  .card-view.active, .list-view.active { display: block; }
 
-.view-group button.active {
-  color: #fff;
-  background: #6b73ff;
-  box-shadow: 0 4px 12px rgba(107,115,255,0.4);
-}
+  /* ──────────────── 카드 뷰 ──────────────── */
+  .card-view {
+    padding-bottom: 2rem;
+  }
+  .sim-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+    gap: 1.5rem;
+    padding: 0 2rem;
+  }
+  .card-link { text-decoration: none; color: inherit; display: block; }
 
-/* ────────────────
-   우측: Select/Delete 버튼 그룹
-──────────────── */
-.view-toggle .action-group {
-  display: flex;
-  gap: 0.5rem;
-}
+  .sim-card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .sim-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px var(--shadow-color);
+  }
+  .sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: var(--header-txt);
+    background: linear-gradient(135deg, var(--header-bg-start), var(--header-bg-end));
+  }
+  .sim-header.running   { background: linear-gradient(135deg, var(--running-start), var(--running-end)); }
+  .sim-header.finished  { background: linear-gradient(135deg, var(--finished-start), var(--finished-end)); }
+  .sim-header.error     { background: linear-gradient(135deg, var(--error-start), var(--error-end)); }
+  .sim-header.no_output { background: var(--grad-pend); }
 
-.action-group button {
-  padding: 0.6rem 1.2rem;
-  font-size: .95rem;
-  font-weight: 500;
-  color: #fff;
-  background: #84da4e;
-  border: none;
-  border-radius: 9999px;
-  box-shadow: 0 4px 12px rgba(132,218,78,0.4);
-  cursor: pointer;
-  transition: 
-    background 0.3s ease, 
-    transform 0.2s ease, 
-    box-shadow 0.2s ease;
-}
+  .sim-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sim-badge {
+    background: rgba(255,255,255,0.2);
+    padding: .3rem .75rem;
+    border-radius: var(--badge-radius);
+    font-size: .85rem;
+    font-weight: 600;
+  }
 
-.action-group button:hover:not(:disabled) {
-  background: #6dc13f;
-  transform: translateY(-2px);
-}
+  .sim-info {
+    padding: 1.25rem 1.5rem;
+    color: var(--info-txt);
+    flex: 1;
+  }
+  .sim-info p {
+    margin: .4rem 0;
+    font-size: .95rem;
+    display: grid;
+    grid-template-columns: 5rem auto;
+  }
+  .sim-info span:first-child { font-weight: 600; }
 
-.action-group button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(132,218,78,0.3);
-}
+  .sim-footer {
+    padding: .75rem 1.5rem;
+    background: #fafbfc;
+    color: var(--footer-txt);
+    font-size: .85rem;
+    text-align: right;
+  }
 
-/* Select Mode 기본 & 활성화 색 */
-#select-mode-btn {
-  background: #ccc;
-  color: #333;
-}
-#select-mode-btn.active {
-  background: #e74c3c;
-  box-shadow: 0 4px 12px rgba(231,76,60,0.4);
-}
+  /* ──────────────── 리스트 뷰 ──────────────── */
+  .list-view { padding-bottom: 2rem; }
+  .list-container { margin: 0 2rem; }
+  .list-header, .list-row {
+    display: grid;
+    grid-template-columns: minmax(100px,1fr) minmax(80px,1fr) minmax(80px,1fr) 80px 80px 100px;
+    align-items: center;
+    padding: .75rem 1rem;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .list-header {
+    background: #f7f7f7;
+    font-weight: 600;
+    color: var(--info-txt);
+  }
+  .list-row.running   { background: var(--color-running); border-left: 4px solid var(--border-running); }
+  .list-row.finished  { background: var(--color-finished); border-left: 4px solid var(--border-finished); }
+  .list-row.error     { background: var(--color-error); border-left: 4px solid var(--border-error); }
+  .list-row.no_output { background: var(--grad-pend); border-left: 4px solid var(--border-pending); }
 
-/* Delete Selected 비활성화 상태 */
-#delete-selected:disabled {
-  background: #ddd;
-  color: #888;
-  box-shadow: none;
-  cursor: not-allowed;
-}
+  .list-row p, .list-row span.badge {
+    margin: 0;
+    font-size: .95rem;
+    padding: .2rem .5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-row span.badge {
+    justify-self: end;
+    background: rgba(0,0,0,0.1);
+    border-radius: .5rem;
+  }
 
+  .empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--info-txt);
+  }
 
-/* ────────────────
-   CARD & LIST VIEW 토글
-──────────────── */
-.card-view, .list-view {
-  display: none;
-}
-.card-view.active, .list-view.active {
-  display: block;
-}
+  /* ──────────────── 체크박스 & Select Mode ──────────────── */
+  .sim-card-wrapper,
+  .list-row-wrapper {
+    position: relative;
+  }
+  .checkbox {
+    display: none;
+  }
+  body.select-mode-active .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 2px solid #e74c3c;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    z-index: 10;
+  }
+  body.select-mode-active .checkbox.checked {
+    background: #e74c3c;
+    border-color: #c00;
+  }
+  body.select-mode-active .checkbox.checked::after {
+    content: '✔';
+    font-size: 1rem;
+    color: #fff;
+    line-height: 1;
+  }
 
-/* ────────────────
-   CARD VIEW
-──────────────── */
-.card-view {
-  padding-bottom: 2rem;
-}
-.card-view .sim-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  padding: 0 2rem;
-}
-.card-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.sim-card {
-  background: var(--card-bg);
-  border-radius: var(--card-radius);
-  box-shadow: 0 4px 12px var(--shadow-color);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: transform .2s, box-shadow .2s;
-}
-.sim-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px var(--shadow-color);
-}
-.sim-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  color: var(--header-txt);
-  background: linear-gradient(135deg, var(--header-bg-start), var(--header-bg-end));
-}
-.sim-header.running   { background: linear-gradient(135deg, var(--running-start),  var(--running-end)); }
-.sim-header.finished  { background: linear-gradient(135deg, var(--finished-start), var(--finished-end)); }
-.sim-header.error     { background: linear-gradient(135deg, var(--error-start),    var(--error-end)); }
-.sim-header.no_output,
-.sim-header.queued    { background: var(--grad-pend); }
-
-.sim-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.sim-badge {
-  background: rgba(255,255,255,0.2);
-  padding: .3rem .75rem;
-  border-radius: var(--badge-radius);
-  font-size: .85rem;
-  font-weight: 600;
-}
-
-.sim-info {
-  padding: 1.25rem 1.5rem;
-  color: var(--info-txt);
-  flex: 1;
-}
-.sim-info p {
-  margin: .4rem 0;
-  font-size: .95rem;
-  display: grid;
-  grid-template-columns: 5rem auto;
-}
-.sim-info span:first-child {
-  font-weight: 600;
-}
-
-.sim-footer {
-  padding: .75rem 1.5rem;
-  background: #fafbfc;
-  color: var(--footer-txt);
-  font-size: .85rem;
-  text-align: right;
-}
-
-/* ────────────────
-   LIST VIEW
-──────────────── */
-.list-view {
-  padding-bottom: 2rem;
-}
-.list-container {
-  margin: 0 2rem;
-}
-.list-header,
-.list-row {
-  display: grid;
-  grid-template-columns: minmax(100px,1fr) minmax(80px,1fr) minmax(80px,1fr) 80px 80px 100px;
-  align-items: center;
-  padding: .75rem 1rem;
-  border-bottom: 1px solid #eaeaea;
-}
-.list-header {
-  background: #f7f7f7;
-  font-weight: 600;
-  color: var(--info-txt);
-}
-.list-row {
-  color: inherit;
-  text-decoration: none;
-}
-.list-row.running {
-  background: var(--color-running);
-  border-left: 4px solid var(--border-running);
-}
-.list-row.finished {
-  background: var(--color-finished);
-  border-left: 4px solid var(--border-finished);
-}
-.list-row.error {
-  background: var(--color-error);
-  border-left: 4px solid var(--border-error);
-}
-.list-row.no_output,
-.list-row.queued {
-  background: var(--grad-pend);
-  border-left: 4px solid var(--border-pending);
-}
-.list-row p,
-.list-row span.badge {
-  margin: 0;
-  font-size: .95rem;
-  padding: .2rem .5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.list-row span.badge {
-  justify-self: end;
-  background: rgba(0,0,0,0.1);
-  border-radius: .5rem;
-}
-
-.empty {
-  text-align: center;
-  padding: 2rem;
-  color: var(--info-txt);
-}
-
-/* ────────────────
-   카드/리스트 래퍼 위치 지정
-──────────────── */
-.sim-card-wrapper,
-.list-row-wrapper {
-  position: relative;
-}
-
-/* ────────────────
-   체크박스 및 Select Mode 관련
-──────────────── */
-.checkbox {
-  display: none;
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  background: #fff;
-  cursor: pointer;
-  transition: background .2s, border-color .2s;
-  z-index: 10;
-}
-.select-mode-active .checkbox {
-  display: block;
-}
-.checkbox.checked {
-  background: #f80814;
-  border-color: #010801;
-}
-
-/* ────────────────
-   Delete Selected 버튼
-──────────────── */
-#delete-selected {
-  margin-left: auto;
-  padding: 0.5rem 1rem;
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  display: none;
-}
-#delete-selected:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
+  /* Delete Selected 버튼은 선택 모드일 때만 */
+  #delete-selected {
+    display: none;
+  }
+  body.select-mode-active #delete-selected {
+    display: inline-block;
+  }
 </style>
+
 
 <h2 style="padding-left:2rem; color:var(--info-txt);">Simulations</h2>
 
@@ -361,17 +291,20 @@
     <button data-view="card" class="active">Card View</button>
     <button data-view="list">List View</button>
   </div>
+  <div class="status-group">
+    <button data-status="running" class="active">Running</button>
+    <button data-status="finished" class="active">Finished</button>
+    <button data-status="no_output" class="active">No Output</button>
+  </div>
   <div class="action-group">
     <button id="select-mode-btn">Select Mode</button>
     <button id="delete-selected" disabled>Delete Selected</button>
   </div>
 </div>
-
-<!-- 카드뷰 -->
 <div class="card-view active">
   <div class="sim-container">
     {% for sim in simulations %}
-      <div class="sim-card-wrapper">
+      <div class="sim-card-wrapper" data-name="{{ sim.name }}" data-status="{{ sim.status|default:'no_output'|lower }}">
         <a href="{% url 'simulation_detail' sim.name %}" class="card-link">
           <div class="sim-card">
             <div class="sim-header {{ sim.status|default:'queued'|lower }}">
@@ -384,7 +317,10 @@
               <p><span>Temp:</span><span>{{ sim.temp }} K</span></p>
               <p><span>Pres:</span><span>{{ sim.pressure }} kPa</span></p>
             </div>
-            <div class="sim-footer">Modified {{ sim.modified|date:"Y-m-d H:i" }}</div>
+            <div class="sim-footer">
+  Modified {{ sim.modified|timezone:"Asia/Seoul"|date:"Y-m-d H:i" }}
+</div>
+
           </div>
         </a>
         <div class="checkbox" data-name="{{ sim.name }}"></div>
@@ -395,7 +331,6 @@
   </div>
 </div>
 
-<!-- 리스트뷰 -->
 <div class="list-view">
   <div class="list-container">
     <div class="list-header">
@@ -403,51 +338,71 @@
     </div>
     {% for sim in simulations %}
       <div class="list-row-wrapper">
-        <a href="{% url 'simulation_detail' sim.name %}" class="list-row {{ sim.status|default:'queued'|lower }}">
-          <p>{{ sim.name }}</p><p>{{ sim.framework }}</p><p>{{ sim.gas }}</p>
-          <p>{{ sim.temp }} K</p><p>{{ sim.pressure }} kPa</p>
-          <span class="badge">{{ sim.status|capfirst }}</span>
+        <a href="{% url 'simulation_detail' sim.name %}" class="list-row {{ sim.status|default:'queued'|lower }}" data-name="{{ sim.name }}" data-status="{{ sim.status|default:'no_output'|lower }}">
+          <p>{{ sim.name }}</p><p>{{ sim.framework }}</p><p>{{ sim.gas }}</p><p>{{ sim.temp }} K</p><p>{{ sim.pressure }} kPa</p><span class="badge">{{ sim.status|capfirst }}</span>
         </a>
         <div class="checkbox" data-name="{{ sim.name }}"></div>
       </div>
     {% empty %}
-      <p class="empty">현재 실행 중이거나 완료된 시뮬레이션이 없습니다.</p>
+      <p class="empty">현재 실행 중이거나 완료된 시뮬레이션이 없습니다。</p>
     {% endfor %}
   </div>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // — 저장된 뷰 모드 복원 —
   const savedView = localStorage.getItem('simulations_view');
   if (savedView) {
-    const savedBtn = document.querySelector(`.view-toggle button[data-view="${savedView}"]`);
-    if (savedBtn) savedBtn.click();
+    const btn = document.querySelector(`.view-toggle button[data-view=\"${savedView}\"]`);
+    if(btn) btn.click();
   }
 
-  // 뷰 토글
   const viewBtns = document.querySelectorAll('.view-toggle button[data-view]');
   const cardView = document.querySelector('.card-view');
   const listView = document.querySelector('.list-view');
-  viewBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      viewBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  viewBtns.forEach(btn => btn.addEventListener('click', () => {
+    viewBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(btn.dataset.view==='list'){
+      cardView.classList.remove('active');
+      listView.classList.add('active');
+    } else {
+      listView.classList.remove('active');
+      cardView.classList.add('active');
+    }
+    localStorage.setItem('simulations_view', btn.dataset.view);
+    sortByTimestamp(); applyStatusFilter();
+  }));
 
-      if (btn.dataset.view === 'list') {
-        cardView.classList.remove('active');
-        listView.classList.add('active');
-      } else {
-        listView.classList.remove('active');
-        cardView.classList.add('active');
-      }
+  // 상태 필터
+  const statusBtns = document.querySelectorAll('.view-toggle button[data-status]');
+  const state = { running:true, finished:true, no_output:true };
+  statusBtns.forEach(btn => btn.addEventListener('click', () => {
+    const s = btn.dataset.status;
+    state[s] = !state[s];
+    btn.classList.toggle('inactive', !state[s]);
+    applyStatusFilter();
+  }));
 
-      // 선택 뷰 저장
-      localStorage.setItem('simulations_view', btn.dataset.view);
-      console.log('View switched to:', btn.dataset.view);
+  function applyStatusFilter(){
+    document.querySelectorAll('.sim-card-wrapper, .list-row').forEach(el=>{
+      el.style.display = state[el.dataset.status] ? '' : 'none';
     });
-  });
+  }
 
-  // Select Mode & 다중삭제
+  // 타임스탬프 정렬
+  function sortByTimestamp(){
+    const container = cardView.classList.contains('active')
+      ? document.querySelector('.card-view .sim-container')
+      : document.querySelector('.list-view .list-container');
+    Array.from(container.children)
+      .sort((a,b)=> b.dataset.name.slice(-15).localeCompare(a.dataset.name.slice(-15)))
+      .forEach(i=>container.appendChild(i));
+  }
+
+  sortByTimestamp(); applyStatusFilter();
+});
+ // ─────────── Select Mode & 다중 삭제 ───────────
   const selectBtn = document.getElementById('select-mode-btn');
   const deleteBtn = document.getElementById('delete-selected');
   let selected = new Set();
@@ -455,41 +410,36 @@ document.addEventListener('DOMContentLoaded', function() {
   selectBtn.addEventListener('click', () => {
     const active = document.body.classList.toggle('select-mode-active');
     selectBtn.classList.toggle('active', active);
+    // 삭제 버튼 보이기/숨기기
     deleteBtn.style.display = active ? 'inline-block' : 'none';
     deleteBtn.disabled = true;
+    // 초기화
     selected.clear();
     document.querySelectorAll('.checkbox').forEach(cb => cb.classList.remove('checked'));
-    console.log('Select Mode:', active);
   });
 
-  // 카드 및 리스트 래퍼 클릭으로 선택
+  // 카드 & 리스트 항목 클릭해서 체크박스 토글
   document.querySelectorAll('.sim-card-wrapper, .list-row-wrapper').forEach(wrapper => {
-    const link = wrapper.querySelector('a');
     const cb = wrapper.querySelector('.checkbox');
     const name = cb.dataset.name;
-
-    // wrapper 클릭 시 토글
+    // wrapper 클릭 시
     wrapper.addEventListener('click', e => {
       if (!document.body.classList.contains('select-mode-active')) return;
       cb.classList.toggle('checked');
       if (cb.classList.contains('checked')) selected.add(name);
       else selected.delete(name);
-      deleteBtn.disabled = selected.size === 0;
-      console.log('현재 선택된 항목:', Array.from(selected));
+      deleteBtn.disabled = (selected.size === 0);
     });
-
-    // href 비활성화
+    // 링크 클릭은 선택 모드일 때 막기
+    const link = wrapper.querySelector('a');
     link.addEventListener('click', e => {
-      if (document.body.classList.contains('select-mode-active')) {
-        e.preventDefault();
-      }
+      if (document.body.classList.contains('select-mode-active')) e.preventDefault();
     });
   });
 
-  // 삭제 버튼 클릭
+  // 실제 삭제 요청
   deleteBtn.addEventListener('click', () => {
     if (!confirm('선택한 시뮬레이션을 삭제하시겠습니까?')) return;
-    console.log('삭제 요청:', Array.from(selected));
     fetch("{% url 'delete_multiple' %}", {
       method: 'POST',
       headers: {
@@ -499,22 +449,15 @@ document.addEventListener('DOMContentLoaded', function() {
       body: JSON.stringify({ names: Array.from(selected) })
     })
     .then(res => {
-      if (res.ok) {
-        console.log('삭제 성공:', Array.from(selected));
-        // 삭제 후 다시 로드하더라도 저장된 뷰 모드를 유지합니다
-        location.reload();
-      } else {
-        console.error('삭제 중 오류:', res.statusText);
-        alert('삭제 중 오류가 발생했습니다.');
-      }
+      if (res.ok) location.reload();
+      else alert('삭제 중 오류가 발생했습니다.');
     })
-    .catch(err => {
-      console.error('삭제 요청 실패:', err);
-      alert('삭제 요청에 실패했습니다.');
-    });
+    .catch(() => alert('삭제 요청에 실패했습니다.'));
   });
-});
-</script>
 
+  // ─────────── Init ───────────
+  sortByTimestamp();
+  applyStatusFilter();
+</script>
 
 {% endblock %}

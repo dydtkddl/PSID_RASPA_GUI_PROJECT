@@ -4,20 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}RASPA_GUI{% endblock %}</title>
-
-  <!-- 1. 외부 폰트 · 아이콘 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- 2. 디자인 토큰 + 리셋 -->
   <style>
   :root{
-    /* space */
     --gap-1: .6rem;  --gap-2: 1rem;  --gap-3: 1.618rem;  /* φ */
-    /* palette */
-    /* background:;color:#fff */
     --bg      : #F6F8FC;
     --header1 : #2c3e50;
     --header2 : #2c3e50;
@@ -25,9 +19,7 @@
     --txt     : #1E2331;
     --muted   : #6B7280;
     --shadow  : 0 6px 18px rgba(0,0,0,.07);
-    /* radius */
     --radius  : .75rem;
-    /* font */
     --font    : "Poppins", Helvetica, Arial, sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -38,7 +30,6 @@
     font-family:var(--font); -webkit-font-smoothing:antialiased;
   }
 
-  /************* Header *************/
   header{
     position:sticky; top:0; z-index:100;
     display:flex; align-items:center; justify-content:space-between;
@@ -64,34 +55,126 @@
     .logo{font-size:1.1rem;}
   }
 
-  /************* Main *************/
   main{
+    width: 100%;
     max-width:1200px;
     margin-inline:auto;
     padding:var(--gap-3) var(--gap-2) var(--gap-3);
   }
+    footer {
+      margin-top: 4rem;
+      background: #232f3e;
+      color: #f7fafc;
+      box-shadow: 0 -3px 18px rgba(44,62,80,.08);
+      border-top-left-radius: 1.2rem;
+      border-top-right-radius: 1.2rem;
+      font-family: var(--font);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.3rem 1.6rem 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .footer-title {
+      font-size: 1.19rem;
+      font-weight: 600;
+      margin-bottom: .6rem;
+      color: #f9ca24;
+      letter-spacing: .02em;
+    }
+    .footer-desc {
+      font-size: 1rem;
+      color: #ecf0f1;
+      line-height: 1.7;
+      margin-bottom: 0.1rem;
+    }
+    .footer-contact {
+      font-size: .98rem;
+      color: #e5e8ea;
+      background: rgba(30,35,49,0.20);
+      border-radius: .8rem;
+      padding: 0.1rem 1.5rem;
+      box-shadow: 0 3px 12px rgba(44,62,80,0.10);
+    }
+    .footer-contact a {
+      color: #6bc2ff;
+      text-decoration: underline dotted;
+      transition: color .18s;
+    }
+    .footer-contact a:hover {
+      color: #f9ca24;
+    }
+    .footer-bottom {
+      text-align: center;
+      font-size: .98rem;
+      color: #a2abb8;
+      background: rgba(30,35,49,0.13);
+      padding: .8rem 0 .9rem;
+      border-bottom-left-radius: 1.2rem;
+      border-bottom-right-radius: 1.2rem;
+      letter-spacing: .01em;
+    }
+    @media (max-width: 700px) {
+      .footer-inner { flex-direction: column; gap:0.5rem; padding: 1.4rem 1.1rem 1rem; }
+      .footer-contact { padding: .9rem 1.1rem; }
+    }
+    html, body {
+  height: 100%;
+}
+body {
+  /* min-height: 100vh; */
+  
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+}
+footer {
+  flex-shrink: 0;
+}
+
   </style>
 </head>
 
 <body>
-  <!-- 1) 헤더 -->
   <header>
-    <!-- 로고 (↩︎ 홈) -->
     <a href="{% url 'simulations' %}" class="logo">
       <i class="fa-solid fa-flask-vial"></i> RASPA_GUI
     </a>
-
-    <!-- 내비게이션 -->
     <nav>
       <a href="{% url 'new_simulation' %}"><i class="fa-solid fa-circle-plus"></i> New</a>
       <a href="{% url 'simulations' %}"><i class="fa-solid fa-list"></i> Runs</a>
       <a href="{% url 'settings' %}"><i class="fa-solid fa-gear"></i> Settings</a>
     </nav>
   </header>
-
-  <!-- 2) 본문 -->
   <main>
     {% block content %}{% endblock %}
   </main>
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-title">Feedback</div>
+        <div class="footer-desc">
+          이 웹사이트를 이용하시면서 불편한 점이나 개선 의견, 문의사항이 있으시면 언제든 연락해 주세요.<br>
+          작은 피드백도 환영합니다!
+        </div>
+      </div>
+      <div class="footer-contact">
+        <div><strong>이름</strong> : 안용상</div>
+        <div><strong>소속</strong> : 경희대학교 화학공학과 Process System Intelligence Design (PSID) Lab</div>
+        <div><strong>연락처</strong> : 010-2671-9969</div>
+        <div><strong>Email</strong> : <a href="mailto:yongsang.an@khu.ac.kr">yongsang.an@khu.ac.kr</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 RASPA_GUI | Designed by yongsang an
+    </div>
+  </footer>
 </body>
+
 </html>

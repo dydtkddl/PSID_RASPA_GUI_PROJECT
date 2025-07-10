@@ -4,24 +4,17 @@
 {% block title %}⚙️ Settings — RASPA_GUI{% endblock %}
 
 {% block content %}
-<!--–––– 기본 Bootstrap ––––-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
 <div class="container py-4">
-
-  <!-- Top bar -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">🔧 Settings</h2>
     <button form="settingsForm" type="submit" class="btn btn-success">
       <i class="fa-solid fa-floppy-disk me-1"></i> Save
     </button>
   </div>
-
-  <!-- Settings form -->
   <form id="settingsForm" method="post" action="{% url 'settings' %}">
     {% csrf_token %}
-
-    {# ---------- (A) Simulation Control ---------- #}
     <div class="card mb-3">
       <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#simControl">
         Simulation Control
@@ -48,8 +41,6 @@
         </div>
       </div>
     </div>
-
-    {# ---------- (B) File & Charge Options ---------- #}
     <div class="card mb-3">
       <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#fileCharge">
         File &amp; Charge Options
@@ -83,8 +74,6 @@
         </div>
       </div>
     </div>
-
-    {# ---------- (C) Physical Conditions ---------- #}
     <div class="card mb-3">
       <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#physCond">
         Physical Conditions
@@ -106,8 +95,6 @@
         </div>
       </div>
     </div>
-
-    {# ---------- (D) Move Probabilities ---------- #}
     <div class="card mb-3">
       <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#moveProb">
         Move Probabilities
@@ -139,8 +126,6 @@
         </div>
       </div>
     </div>
-
-    {# ---------- (E) Defaults ---------- #}
     <div class="card mb-3">
       <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#defaults">
         Forcefield &amp; Molecule Defaults
@@ -174,8 +159,6 @@
         </div>
       </div>
     </div>
-
-    {# ---------- (F) Panel Layout ---------- #}
     <div class="card mb-4">
       <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#panelLayout">
         Panel Layout
@@ -197,8 +180,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Bottom Save / Cancel -->
     <div class="text-end">
       <button type="submit" class="btn btn-success">
         <i class="fa-solid fa-floppy-disk me-1"></i> Save Settings

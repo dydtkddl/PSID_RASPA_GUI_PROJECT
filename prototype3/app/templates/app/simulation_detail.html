@@ -14,10 +14,8 @@
 :root{
   --gap-xs:.5rem; --gap-sm:.9rem; --gap-md:1.4rem; --gap-lg:2.2rem;
   --radius:1rem;
-
   --font:"Poppins",Helvetica,Arial,sans-serif;
   --fs-lg:1.75rem; --fs-md:1.05rem; --fs-sm:.9rem;
-
   --bg:#F6F8FC;
   --surface:#FFFFFF;
   --txt:#1F2333;
@@ -25,7 +23,6 @@
   --primary:#6366F1;
   --primary-dark:#4F52DC;
   --card-shadow:0 4px 18px rgba(0,0,0,.06);
-
   --grad-run :linear-gradient(135deg,#FDBA74,#FB923C);
   --grad-fin :linear-gradient(135deg,#34D399,#059669);
   --grad-err :linear-gradient(135deg,#F87171,#DC2626);
@@ -41,8 +38,31 @@ body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--font);-web
 .card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.08);}
 
 /* ─────────────── Header / Status ribbon ─────────────── */
-.head{padding:var(--gap-md);display:flex;align-items:center;gap:var(--gap-sm);color:#fff;}
-.head h2{margin:0;font-size:var(--fs-lg);font-weight:600;display:flex;align-items:center;gap:.5rem;}
+.head {
+  display: flex;
+  flex-wrap: wrap;                  /* ✅ 작은 화면에서 줄바꿈 */
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: var(--gap-md);
+  color: #fff;
+}
+
+.head h2 {
+  flex: 1 1 300px;              
+  min-width: 0;                 
+  max-width: 100%;              
+  overflow: hidden;             
+  text-overflow: ellipsis;      
+  white-space: nowrap;          
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+/* 버튼 그룹이 좁은 화면에서 아래로 가도록 wrap 허용 */
+
 .badge{font-size:var(--fs-sm);font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.9;}
 .head.running   {background:var(--grad-run);}
 .head.finished  {background:var(--grad-fin);}
@@ -60,9 +80,26 @@ body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--font);-web
 .delete-btn:hover{background:rgba(255,255,255,.30);}
 .refresh-btn{background:#fff;color:var(--primary);}
 .refresh-btn:hover{background:#EEF0FF;}
-
+.head .action-btn,
+.head .delete-form {
+  flex-shrink: 0;
+}
 @supports not (backdrop-filter:blur(4px)){
   .delete-btn{background:rgba(255,255,255,.25);}
+}
+@media (max-width: 600px) {
+  .head {
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    gap: var(--gap-xs);
+  }
+  .head h2 {
+    font-size: 1.3rem;
+  }
+  .action-btn,
+  .delete-form {
+    width: 100%;
+  }
 }
 
 /* ─────────────── Tabs ─────────────── */
@@ -178,7 +215,96 @@ body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--font);-web
   border-radius: 5px;
   align-self: start;
 }
+/* ─────────── Loading Section ─────────── */
+.loading-section {
+  background: var(--bg);
+}
 
+/* 카드 스타일 */
+.loading-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: var(--gap-lg);
+  /* max-width: 1000px; */
+  margin: 0 auto;
+}
+
+/* 헤더: 제목 + stats */
+.loading-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--gap-md);
+  border-bottom: 1px solid #E3E7EF;
+  padding-bottom: var(--gap-md);
+  margin-bottom: var(--gap-lg);
+}
+
+.loading-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--txt);
+  margin: 0;
+  flex: 1 1 200px;
+}
+
+/* 스탯 그리드 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: var(--gap-md);
+  flex: 2 1 400px;
+}
+
+.stat {
+  text-align: center;
+  background: var(--bg);
+  border-radius: calc(var(--radius) - 2px);
+  padding: var(--gap-sm) var(--gap-md);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+.stat-label {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: .25rem;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* 차트 컨테이너 */
+.chart-container {
+  width: 100%;
+  height: 420px;
+  position: relative;
+  padding-top: var(--gap-md);
+}
+
+@media (max-width: 800px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 500px) {
+  .loading-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stats-grid {
+    width: 100%;
+  }
+  .chart-container {
+    height: 300px;
+  }
+}
 </style>
 
 <div class="wrapper">
@@ -232,20 +358,37 @@ body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--font);-web
   </div>
 </section>
     <!-- Loading -->
-<section id="load">
-  <div class="card p-md">
-    <div class="d-flex justify-content-between align-items-baseline mb-2">
-      <p class="section-desc m-0">사이클별 로딩 변화</p>
-
-      {# ● 통계 표시용 <span> 추가  #}
-      <span id="loadingStats" class="badge bg-primary-subtle text-primary fw-semibold"
-            style="font-size:.9rem;"></span>
+<section id="load" class="loading-section">
+  <div class="loading-card">
+    <!-- 1) 헤더: 제목 + 스탯 -->
+    <div class="loading-header">
+      <h3 class="loading-title">사이클별 로딩 변화</h3>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">Phase</div>
+          <div class="stat-value" id="statPhase">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Cycle</div>
+          <div class="stat-value" id="statCycle">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Load</div>
+          <div class="stat-value" id="statLoad">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Avg.</div>
+          <div class="stat-value" id="statAvg">—</div>
+        </div>
+      </div>
     </div>
 
-    <div class="chart-box"><canvas id="loadChart"></canvas></div>
+    <!-- 2) 차트 -->
+    <div class="chart-container">
+      <canvas id="loadChart"></canvas>
+    </div>
   </div>
 </section>
-
     <!-- Log -->
     <section id="log">
       <div class="card" style="padding:var(--gap-md);">
@@ -389,70 +532,102 @@ loadChart = new Chart(ctx, {
 chartReady = true;
 
 /*****  ● Stats 텍스트 업데이트 함수  *****/
+// 전역에 이미 선언된 meta 객체 사용 가능:
+// const meta = {{ siminput_info|safe }};
+
 function updateStats(){
   const cycles = loadChart.data.labels;
   const vals   = loadChart.data.datasets[0].data;
   const avgArr = loadChart.data.datasets[1].data;
 
-  if(cycles.length === 0 || vals.length === 0 || avgArr.length === 0){
-    document.getElementById('loadingStats').textContent = 'No data yet';
+  // 데이터 부족 시 초기화
+  if(!cycles.length || !vals.length || !avgArr.length){
+    ['statPhase','statCycle','statLoad','statAvg'].forEach(id => {
+      document.getElementById(id).innerText = '—';
+    });
     return;
   }
 
-  const currentIdx   = vals.length - 1;
-  const currentCycle = cycles[currentIdx];
-  const currentLoad  = vals[currentIdx]?.toFixed(3) ?? '—';
-  const currentAvg   = avgArr[currentIdx]?.toFixed(3) ?? '—';
+  const idx          = vals.length - 1;
+  const currentCycle = cycles[idx];
+  const currentLoad  = vals[idx]?.toFixed(3) ?? '—';
+  const currentAvg   = avgArr[idx]?.toFixed(3) ?? '—';
 
-  /* 초기화(Initialization)인지 판정: currentCycle < 초기_cycles */
-  const initCycles = {{ NumberOfInitializationCycles|default:"0" }};
-  const phase = currentCycle < initCycles ? 'Init' : 'Normal';
+  // 총 사이클 수 (메타에서 가져오거나, 로드 시계열 길이 fallback)
+  const totalCycles = parseInt(meta.global?.NumberOfCycles) || cycles[cycles.length - 1];
 
-  document.getElementById('loadingStats').innerText =
-    `Cycle ${currentCycle} (${phase}) · Avg ${currentAvg} · Load ${currentLoad}`;
+  // 초기화 여부 판정
+  const initCycles = parseInt(meta.global?.NumberOfInitializationCycles) || 0;
+  const phase      = currentCycle < initCycles ? 'Init' : 'Normal';
+
+  // 1) Phase
+  document.getElementById('statPhase').innerText = phase;
+  // 2) Cycle: 현재/전체
+  document.getElementById('statCycle').innerText = `${currentCycle}/${totalCycles}`;
+  // 3) Load & Avg
+  document.getElementById('statLoad').innerText  = currentLoad;
+  document.getElementById('statAvg').innerText   = currentAvg;
 }
 
+
+
 updateStats();   // 최초 1회 호출
-new ResizeObserver(()=>loadChart.resize()).observe(document.querySelector('.chart-box'));
-window.addEventListener('orientationchange',()=>loadChart.resize());
+const chartContainer = document.querySelector('.chart-container');
+if (chartContainer) {
+  new ResizeObserver(() => loadChart.resize())
+    .observe(chartContainer);
+}
+window.addEventListener('orientationchange', () => loadChart.resize());
 
 /********************************************
   Refresh Button Logic
 *********************************************/
-document.getElementById('refreshBtn').addEventListener('click', async ()=>{
-  try{
-    console.log(1111)
+document.getElementById('refreshBtn').addEventListener('click', async () => {
+  try {
     const res = await fetch(refreshURL);
     const data = await res.json();
 
-    /* 1) 상태 배지 & 헤더 색상 */
-    const head  = document.querySelector('.head');
+    // 상태 업데이트
+    const head = document.querySelector('.head');
     const badge = head.querySelector('.badge');
-    head.classList.remove('running','finished','error','no_output');
+    head.classList.remove('running', 'finished', 'error', 'no_output');
     head.classList.add(data.status.toLowerCase());
     badge.textContent = data.status;
 
-    /* 2) 로그 & 데이터 텍스트 */
-    document.getElementById('logBox').textContent  = data.log_text;
+    // 텍스트 업데이트
+    document.getElementById('logBox').textContent = data.log_text;
     document.getElementById('dataBox').textContent = data.data_text;
 
-    /* 3) 그래프 갱신 */
-    const cycles = data.load_series.map(e=>e[1]);
-    const vals   = data.load_series.map(e=>e[2]);
-  loadChart.data.labels = cycles;         // 새 배열로 교체
-  loadChart.data.datasets[0].data = vals;
-  loadChart.data.datasets[1].data = runAvg;
-  loadChart.update();
-  /* 3) 상단 텍스트 갱신 */
-  updateStats();
-  }catch(err){
+    // ● 새 데이터 기반 cycle & val 추출
+    const cycles = data.load_series.map(e => e[1]);
+    const vals = data.load_series.map(e => e[2]);
+
+    // ● 새로 runAvg 계산
+    const runAvg = vals.map((v, i) =>
+      vals.slice(0, i + 1).reduce((a, b) => a + b, 0) / (i + 1)
+    );
+
+    // ● Chart 갱신
+    loadChart.data.labels = cycles;
+    loadChart.data.datasets[0].data = vals;
+    loadChart.data.datasets[1].data = runAvg;
+    loadChart.update();
+
+    // ● 통계 텍스트 갱신
+    updateStats();
+  } catch (err) {
     console.error('Refresh failed:', err);
     alert('새로고침에 실패했습니다.');
   }
 });
+
   const cifText = `{{ ciftext|escapejs }}`;
   console.log(cifText)
     Jmol.script(          jmolApplet,          `load DATA "model"\n${cifText}\nEND "model";`    );
+    setInterval(() => {
+  document.getElementById('refreshBtn').click();
+  console.log("refresh")
+}, 2500);
 </script>
 
 {% endblock %}
